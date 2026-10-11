@@ -52,6 +52,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  case 'tip-toggle':toggleTip(id);break;
  case 'tip-task':{const T=tipById(id);addTask(T.tip.a,AMB_SCOPE[T.amb.id],'media',1);toast('Añadida a tus tareas de hoy','plus','',{label:'Ver',fn:()=>setTab('foco')});break;}
  case 'goto-tip':{const T=tipById(id);state.ui.amb=T.amb.id;state.ui.sub=T.si;setTab('habitos');break;}
+ case 'set':state.ui.baseSet=id;pendingBuy=null;save();renderAvatar();break;
  case 'cat':state.ui.cat=id;pendingBuy=null;save();renderAvatar();break;
  case 'item':clickItem(el.dataset.cat,id);break;
  case 'av-random':{for(const [c] of CATS){const opts=ITEMS[c].filter(isUnlocked);state.avatar[c]=opts[Math.floor(Math.random()*opts.length)].id;}save();renderHud();renderAvatar();break;}

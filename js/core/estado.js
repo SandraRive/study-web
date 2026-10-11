@@ -10,7 +10,7 @@ const DEFAULT={name:'',xp:0,coins:0,coinsEarned:0,owned:{},avatar:{base:'gato',c
  topics:[],cards:[],errors:[],log:{},goals:{pomos:20,minutes:600,tasks:15,cards:100,days:5},goalsClaimed:{},
  settings:{work:25,short:5,long:15,every:4,auto:false,chime:true},
  timer:{mode:'work',remaining:1500,endAt:null,running:false,cycle:0,taskId:null},
- ui:{tab:'inicio',amb:'base',sub:0,filter:'all',cat:'base',tem:'temas',temScope:'all',tpSel:null,fcTopic:'all',erFilter:'pend',erReason:'all',erTp:'all'},
+ ui:{tab:'inicio',amb:'base',sub:0,filter:'all',cat:'base',baseSet:'clasicos',tem:'temas',temScope:'all',tpSel:null,fcTopic:'all',erFilter:'pend',erReason:'all',erTp:'all'},
  audio:{master:.8,vols:{lofi:.7,lluvia:.6,fuego:.6,olas:.6,blanco:.5,rosa:.5,marron:.6}},
  soundsUsed:false,maxSounds:0};
 function load(){let s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}const d=JSON.parse(JSON.stringify(DEFAULT));if(s&&typeof s==='object'){for(const k in d){if(s[k]===undefined)continue;if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k]))d[k]=Object.assign(d[k],s[k]);else d[k]=s[k];}}return d;}
