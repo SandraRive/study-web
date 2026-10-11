@@ -1,0 +1,28 @@
+/* ---------- Sonidos ---------- */
+.mixer{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.master{display:flex;align-items:center;gap:10px;flex:1 1 260px;font-weight:800}
+.master input{flex:1}
+input[type="range"]{accent-color:var(--pink);min-width:0;cursor:pointer}
+.presets{display:flex;gap:10px;flex-wrap:wrap}
+.sound-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.sound{border:3px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--sh);padding:18px;display:flex;flex-direction:column;gap:10px;transition:transform .15s,box-shadow .15s,background-color .2s;min-width:0}
+.sound.on{background:var(--c);color:var(--c-ink);transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--shc)}
+.sound-top{display:flex;justify-content:space-between;align-items:center}
+.sound-ico{width:52px;height:52px;border:3px solid var(--line);border-radius:14px;display:grid;place-items:center;background:var(--c);color:var(--c-ink)}
+.sound.on .sound-ico{background:var(--surface);color:var(--ink)}
+.sound-ico .ico{width:26px;height:26px}
+.sound-name{font:800 18px/1.15 var(--f-display);letter-spacing:-.01em}
+.sound-desc{font-size:14px;color:var(--muted);flex:1}
+.sound.on .sound-desc{color:inherit;opacity:.85}
+.sound-ctrl{display:flex;align-items:center;gap:10px}
+.vol{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
+.sound.on input[type="range"]{accent-color:var(--on-acc)}
+.sound.on .btn{background:var(--surface);color:var(--ink)}
+.eq{display:inline-flex;gap:3px;align-items:flex-end;height:22px;opacity:.25}
+.eq i{width:5px;height:30%;background:currentColor;border-radius:2px}
+.sound.on .eq,.hud-chip .eq{opacity:1}
+.sound.on .eq i,.hud-chip .eq i{animation:eq .9s ease-in-out infinite alternate}
+.eq i:nth-child(2){animation-delay:-.3s!important}.eq i:nth-child(3){animation-delay:-.6s!important}.eq i:nth-child(4){animation-delay:-.15s!important}
+@keyframes eq{0%{height:20%}100%{height:100%}}
+.hud-chip .eq{height:14px}.hud-chip .eq i{width:3px}
+.note{margin-top:24px;font-size:13.5px;color:var(--muted);max-width:70ch}

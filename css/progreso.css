@@ -1,0 +1,52 @@
+/* ---------- Progreso ---------- */
+.pg-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}
+.pg-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-bottom:34px;align-items:start}
+.span2{grid-column:1/-1}
+.heat-wrap{overflow-x:auto;padding-bottom:6px}
+.heat-months{display:grid;grid-auto-flow:column;grid-auto-columns:14px;gap:4px;margin-left:22px;font:700 10px var(--f-mono);color:var(--muted);height:16px}
+.heat-months span{white-space:nowrap;overflow:visible}
+.heat-body{display:flex;gap:4px}
+.heat-days{display:grid;grid-template-rows:repeat(7,14px);gap:4px;width:18px;font:700 10px/14px var(--f-mono);color:var(--muted)}
+.heat{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,14px);grid-auto-columns:14px;gap:4px}
+.hc{width:14px;height:14px;border-radius:3px;background:var(--surface-2);border:1px solid rgba(0,0,0,.5);display:block}
+.hc[data-l="1"]{background:#4A201B}
+.hc[data-l="2"]{background:#8C3120}
+.hc[data-l="3"]{background:#D9452C}
+.hc[data-l="4"]{background:#FF4D3D;box-shadow:0 0 8px rgba(255,77,61,.7)}
+.hc.fut{background:transparent;border-color:transparent}
+.heat-legend{display:flex;align-items:center;gap:4px;font:700 11px var(--f-mono);color:var(--muted);margin-top:10px}
+.wchart{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;height:210px;align-items:end}
+.wb{display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;min-width:0}
+.wb-v{font:700 11px var(--f-mono);font-variant-numeric:tabular-nums}
+.wb-bar{flex:1;width:100%;max-width:44px;display:flex;align-items:flex-end;background:var(--surface-2);border:2px solid var(--line);border-radius:8px;overflow:hidden}
+.wb-bar i{width:100%;background:var(--cobalt);display:block;transition:height .5s}
+.wb.now .wb-bar i{background:var(--pink);box-shadow:0 0 14px rgba(255,77,61,.6)}
+.wb-l{font:700 10.5px var(--f-mono);color:var(--muted);white-space:nowrap}
+.sc-row{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:10px;align-items:center;margin-bottom:14px}
+.sc-bar{height:18px;border:2px solid var(--line);border-radius:99px;background:var(--surface-2);overflow:hidden}
+.sc-bar i{display:block;height:100%}
+.sc-val{font:700 12px var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.goal{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 0;border-bottom:2px dashed var(--track)}
+.goal:last-child{border-bottom:0}
+.goal.ok .ch-ico{background:var(--mint);color:var(--on-acc)}
+.goal-name{font-weight:800;font-size:14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.goal-name span:last-child{font:700 12px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.goal .bar{margin-top:6px;height:10px}
+.goal-set{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font:700 10px var(--f-mono);text-transform:uppercase;color:var(--muted)}
+.goal-set input{width:80px;padding:6px 8px;font-size:14px;text-align:right}
+.ach-sum{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin:6px 0 20px}
+.ach-sum .big{font:900 44px/1 var(--f-display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.ach-sum .bar{flex:1 1 220px;height:18px}
+.ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.ach{border:3px solid var(--line);border-radius:var(--r);background:var(--surface);padding:16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start;min-width:0}
+.ach-ico{width:52px;height:52px;border:3px solid var(--line);border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--muted)}
+.ach-ico .ico{width:24px;height:24px}
+.ach.got{background:var(--sun);color:var(--on-acc);box-shadow:var(--sh)}
+.ach.got .ach-ico{background:var(--pink);color:var(--on-acc)}
+.ach h3{font:800 15.5px/1.2 var(--f-display);letter-spacing:-.01em}
+.ach p{font-size:13.5px;color:var(--muted);margin-top:3px}
+.ach.got p{color:inherit;opacity:.8}
+.ach .bar{height:9px;margin-top:10px}
+.ach-foot{display:flex;justify-content:space-between;gap:8px;margin-top:8px;flex-wrap:wrap;align-items:center;font:700 11.5px var(--f-mono);font-variant-numeric:tabular-nums}
+.reward{font:700 11.5px var(--f-mono);margin-top:6px;display:flex;align-items:center;gap:5px}
+.reward .ico{width:13px;height:13px}

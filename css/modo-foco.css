@@ -1,0 +1,13 @@
+/* ---------- Modo foco ---------- */
+.zen{position:fixed;inset:0;z-index:75;display:flex;align-items:center;justify-content:center;padding:24px 16px;text-align:center;--zc:var(--pink)}
+.zen[data-mode="short"]{--zc:var(--mint)}
+.zen[data-mode="long"]{--zc:var(--cobalt)}
+.zen-in{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:900px;width:100%}
+.zen-mode{font:800 14px var(--f-display);letter-spacing:.22em;text-transform:uppercase;color:var(--zc);text-shadow:0 0 14px var(--zc)}
+.zen-time{font:900 clamp(84px,24vw,260px)/.9 var(--f-display);letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 30px var(--zc),0 0 80px var(--zc),0 5px 0 #000}
+.zen-task{font-weight:700;font-size:18px;color:var(--ink);max-width:44ch;min-height:1.5em;text-shadow:0 2px 0 #000}
+.zen-bar{width:min(100%,540px);height:10px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden}
+.zen-bar i{display:block;height:100%;background:var(--zc);box-shadow:0 0 16px var(--zc)}
+.zen .dots i{border-color:#fff}
+.zen .dots i.on{background:#fff}
+.zen-exit{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));right:16px}

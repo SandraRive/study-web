@@ -1,0 +1,22 @@
+/* Tareas diarias */
+'use strict';
+
+/* ================= TAREAS ================= */
+const PRIO={alta:0,media:1,baja:2};
+function findReview(rev){const tp=state.topics.find(x=>x.id===rev.tp);if(!tp)return null;return tp.reviews.find(r=>r.n===rev.n&&!r.done)||null;}
+function renderTasks(){const t0=today();$('#tDate').textContent=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+ const all=state.tasks,done=all.filter(t=>t.done).length;$('#tCount').innerHTML=`${done}/${all.length}<small>hechas</small>`;$('#tBar').style.width=(all.length?done/all.length*100:0)+'%';
+ $$('#v-foco .filters .seg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.f===state.ui.filter)));
+ let list=all.slice().sort((a,b)=>(a.done-b.done)||(PRIO[a.prio]-PRIO[b.prio])||(a.created-b.created));
+ if(state.ui.filter==='todo')list=list.filter(t=>!t.done);else if(state.ui.filter==='done')list=list.filter(t=>t.done);
+ const ul=$('#taskList');
+ if(!list.length){ul.innerHTML=`<li class="empty"><strong>${all.length&&state.ui.filter==='todo'?'¡Todo hecho!':'Nada por aquí'}</strong>${all.length&&state.ui.filter==='todo'?'Has terminado todas tus tareas de hoy.':'Escribe tu primera tarea arriba y pulsa Añadir.'}</li>`;return;}
+ ul.innerHTML=list.map(t=>{const f=state.timer.taskId===t.id&&!t.done;return `<li class="task prio-${t.prio} ${t.done?'done':''} ${f?'focus':''}" data-id="${t.id}">
+ <button class="check" data-act="task-toggle" aria-label="${t.done?'Marcar como pendiente':'Marcar como completada'}">${ico('check')}</button>
+ <div class="task-main"><span class="task-text">${esc(t.text)}</span><div class="task-meta">${t.rev?'<span class="chip rev">Repaso</span>':''}<span class="chip ${t.scope}">${SCOPE[t.scope]||'Otro'}</span><span class="meta">${ico('timer')}${t.pomos}/${t.est}</span><span class="meta">Prioridad ${t.prio}</span>${t.date<t0&&!t.done?'<span class="chip warn">De otro día</span>':''}${f?'<span class="chip now">En foco</span>':''}</div></div>
+ <div class="task-acts">${t.done?'':`<button class="btn sm icon" data-act="task-focus" aria-label="Trabajar en esta tarea" title="Trabajar en esta tarea">${ico('play')}</button>`}<button class="btn sm icon ghost" data-act="task-edit" aria-label="Editar" title="Editar">${ico('edit')}</button><button class="btn sm icon ghost" data-act="task-del" aria-label="Borrar" title="Borrar">${ico('trash')}</button></div></li>`;}).join('');}
+function addTask(text,scope,prio,est){state.tasks.push({id:uid(),text:text.slice(0,140),scope,prio,est:est||1,pomos:0,done:false,date:today(),created:Date.now(),xp:false});save();}
+function toggleTask(id){const t=state.tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;if(t.done){if(state.timer.taskId===id)state.timer.taskId=null;if(!t.xp){t.xp=true;state.counts.tasksDone++;state.day.tasks++;logDay().tasks++;bumpStreak();let coins=5;if(t.rev){const r=findReview(t.rev);if(r){r.done=true;coins=10;}}grantXP(t.prio==='alta'?15:10,t.rev?'Repaso hecho':'Tarea completada',coins);}}afterAction();if(t.done&&state.ui.tab==='foco'){const li=$(`.task[data-id="${id}"]`);if(li)li.classList.add('pop');}renderFocusSel();}
+function editTask(id){const li=$(`.task[data-id="${id}"]`),t=state.tasks.find(x=>x.id===id);if(!li||!t)return;const span=li.querySelector('.task-text');const inp=document.createElement('input');inp.className='inp task-edit-inp';inp.value=t.text;inp.maxLength=140;inp.setAttribute('aria-label','Editar tarea');span.replaceWith(inp);inp.focus();inp.select();let done=false;const fin=ok=>{if(done)return;done=true;if(ok&&inp.value.trim())t.text=inp.value.trim();save();renderTasks();renderFocusSel();};inp.addEventListener('keydown',e=>{if(e.key==='Enter')fin(true);if(e.key==='Escape')fin(false);});inp.addEventListener('blur',()=>fin(true));}
+function delTask(id){const i=state.tasks.findIndex(x=>x.id===id);if(i<0)return;const [t]=state.tasks.splice(i,1);if(state.timer.taskId===id)state.timer.taskId=null;let r=null;if(t.rev&&!t.done){r=findReview(t.rev);if(r)r.skip=true;}save();renderTasks();renderFocusSel();toast(t.rev?'Repaso omitido':'Tarea borrada','trash','',{label:'Deshacer',fn:()=>{state.tasks.splice(i,0,t);if(r)r.skip=false;save();renderActive();}});}
+$('#taskForm').addEventListener('submit',e=>{e.preventDefault();const v=$('#tText').value.trim();if(!v){$('#tText').focus();return;}addTask(v,$('#tScope').value,$('#tPrio').value,Math.min(12,Math.max(1,parseInt($('#tEst').value,10)||1)));$('#tText').value='';$('#tEst').value=1;renderTasks();renderFocusSel();$('#tText').focus();});

@@ -1,0 +1,26 @@
+/* ---------- Header ---------- */
+.top{position:relative;flex:none;z-index:30;background:var(--surface);border-bottom:3px solid var(--line)}
+.top-in{max-width:1240px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:10px 16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font:900 16px/1 var(--f-display);letter-spacing:-.01em;text-transform:uppercase}
+.brand-mark{width:38px;height:38px;border:3px solid var(--line);border-radius:12px;background:var(--pink);color:var(--on-acc);display:grid;place-items:center;box-shadow:var(--sh-s);transform:rotate(-6deg)}
+.brand small{display:block;font:700 10px var(--f-mono);letter-spacing:.14em;color:var(--muted);margin-top:3px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;order:3;flex:1 1 100%;padding:4px 2px 6px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:3px solid transparent;border-radius:999px;font:700 14px var(--f-body);background:transparent;cursor:pointer;white-space:nowrap;color:var(--ink)}
+.tab:hover{border-color:var(--surface-2)}
+.tab[aria-selected="true"]{background:var(--sun);color:var(--on-acc);border-color:var(--line);box-shadow:var(--sh-s)}
+.hud{margin-left:auto;display:flex;gap:8px;align-items:center}
+.hud-chip{display:inline-flex;align-items:center;gap:7px;border:3px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;background:var(--surface-2);font:800 13px var(--f-body);cursor:pointer;box-shadow:var(--sh-s);color:var(--ink);font-variant-numeric:tabular-nums}
+.hud-chip.plain{padding:6px 12px}
+.hud-av{width:30px;height:30px;border-radius:50%;overflow:hidden;display:block}
+.hud-av svg{width:100%;height:100%;display:block}
+.hud-xp{width:56px;height:8px;border-radius:9px;background:var(--track);overflow:hidden;display:block}
+.hud-xp i{display:block;height:100%;background:var(--mint)}
+.hud-time{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.hud-chip.timer{background:var(--pink);color:var(--on-acc)}
+.hud-chip.timer.short{background:var(--mint)}
+.hud-chip.timer.long{background:var(--cobalt);color:var(--on-cobalt)}
+@media (min-width:1160px){.tabs{order:0;flex:1 1 auto;justify-content:center}}
+.marquee{background:var(--pink);color:var(--on-acc);border-top:3px solid var(--line);margin-bottom:-3px;overflow:hidden;white-space:nowrap}
+.marquee-track{display:flex;justify-content:center;gap:26px;padding:7px 16px;font:800 12px var(--f-display);text-transform:uppercase;letter-spacing:.1em;align-items:center}
+.marquee-track .ico{width:14px;height:14px}
