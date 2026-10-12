@@ -14,12 +14,17 @@ function renderTimer(){const t=state.timer,dur=durOf(t.mode),rem=remainingNow(),
  const every=state.settings.every,c=t.cycle%every;let d='';for(let i=0;i<every;i++)d+=`<i class="${i<c?'on':''}"></i>`;$('#dots').innerHTML=d;
  const z=$('#zen');if(!z.hidden){z.dataset.mode=t.mode;$('#zTime').textContent=txt;$('#zMode').textContent=MODE_LBL[t.mode];$('#zBar').style.width=((1-rem/dur)*100)+'%';const tk=state.tasks.find(x=>x.id===t.taskId);$('#zTask').textContent=t.mode==='work'?(tk?'Trabajando en: '+tk.text:'Una cosa cada vez.'):'Levántate, estira y bebe agua.';$('#zDots').innerHTML=d;}
  if(t.running)document.title=`${txt} · ${t.mode==='work'?'Foco':'Descanso'}`;else if(document.title!=='Misión Estudio')document.title='Misión Estudio';}
-function startTimer(){ac();if(state.timer.mode==='work'&&!state.timer.running)SKY.warp();const t=state.timer;if(t.remaining<=0)t.remaining=durOf(t.mode);t.running=true;t.endAt=Date.now()+t.remaining*1000;save();renderTimer();renderHudTimer();}
-function pauseTimer(){const t=state.timer;if(!t.running)return;t.remaining=Math.max(0,Math.round((t.endAt-Date.now())/1000));t.running=false;t.endAt=null;save();renderTimer();renderHudTimer();}
-function setMode(m){const t=state.timer;t.running=false;t.endAt=null;t.mode=m;t.remaining=durOf(m);save();renderTimer();renderHudTimer();}
-function completeTimer(silent){const t=state.timer,s=state.settings;t.running=false;t.endAt=null;let next;
+/* Temporizador exacto: un único aviso programado para el final del bloque, que el navegador respeta mejor en segundo plano */
+let endTO=null;
+function disarmEnd(){if(endTO){clearTimeout(endTO);endTO=null;}}
+function armEnd(){disarmEnd();const t=state.timer;if(!t.running||!t.endAt)return;endTO=setTimeout(()=>{endTO=null;if(state.timer.running&&Date.now()>=state.timer.endAt-25)completeTimer(false);},Math.max(0,t.endAt-Date.now())+30);}
+function startTimer(){ac();if(state.timer.mode==='work'&&!state.timer.running)SKY.warp();const t=state.timer;if(t.remaining<=0)t.remaining=durOf(t.mode);t.running=true;t.endAt=Date.now()+t.remaining*1000;armEnd();save();renderTimer();renderHudTimer();}
+function pauseTimer(){const t=state.timer;if(!t.running)return;t.remaining=Math.max(0,Math.round((t.endAt-Date.now())/1000));t.running=false;t.endAt=null;disarmEnd();save();renderTimer();renderHudTimer();}
+function setMode(m){const t=state.timer;t.running=false;t.endAt=null;disarmEnd();t.mode=m;t.remaining=durOf(m);save();renderTimer();renderHudTimer();}
+function completeTimer(silent){const t=state.timer,s=state.settings;t.running=false;t.endAt=null;disarmEnd();let next;
  if(t.mode==='work'){state.pomo.total++;state.pomo.minutes+=s.work;state.day.pomos++;state.day.minutes+=s.work;const tk=state.tasks.find(x=>x.id===t.taskId);if(tk)tk.pomos++;const L=logDay();L.min+=s.work;L.pomos++;const sc=tk?tk.scope:'otro';L.sc[sc]=(L.sc[sc]||0)+s.work;t.cycle++;bumpStreak();if(!silent)chime();grantXP(25,'Pomodoro completado',10);next=(t.cycle%s.every===0)?'long':'short';if(!silent)toast(`<b>¡Bloque terminado!</b> Toca ${next==='long'?'descanso largo':'descanso'}.`,'timer');}
  else{if(!silent){chime();toast('<b>Descanso terminado.</b> A por el siguiente bloque.','timer');}next='work';}
+ if(!silent)notifyTimer(t.mode,next);
  t.mode=next;t.remaining=durOf(next);if(s.auto&&!silent)startTimer();afterAction();renderTimer();}
 setInterval(()=>{const t=state.timer;if(t.running&&Date.now()>=t.endAt)completeTimer(false);if(state.ui.tab==='foco'||!$('#zen').hidden)renderTimer();else if(t.running)document.title=`${fmt(Math.ceil(remainingNow()))} · ${t.mode==='work'?'Foco':'Descanso'}`;renderHudTimer();},250);
 setInterval(()=>{const d=state.day.date;ensureDay();if(d!==state.day.date){save();renderActive();}},60000);

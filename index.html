@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Web gamificada de hábitos de estudio: pomodoro, tareas, temario con repaso espaciado, flashcards, cuaderno de errores, sonidos, avatares y logros.">
 <meta name="theme-color" content="#03050C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Misión Estudio">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Misión Estudio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +30,7 @@
 <link rel="stylesheet" href="css/progreso.css">
 <link rel="stylesheet" href="css/modo-foco.css">
 <link rel="stylesheet" href="css/avisos.css">
+<link rel="stylesheet" href="css/ajustes.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -37,6 +46,7 @@
       <button class="hud-chip plain" id="hudSound" hidden data-act="tab" data-tab="sonidos" aria-label="Sonidos activos"></button>
       <button class="hud-chip plain timer" id="hudTimer" hidden data-act="tab" data-tab="foco" aria-label="Temporizador"></button>
       <button class="hud-chip plain" id="hudCoins" data-act="go-shop" aria-label="Monedas y tienda"></button>
+      <button class="hud-chip plain hud-gear" id="hudGear" data-act="tab" data-tab="ajustes" aria-label="Ajustes, app y copia de seguridad"></button>
       <button class="hud-chip" id="hudPlayer" data-act="tab" data-tab="avatar" aria-label="Tu avatar y nivel"></button>
     </div>
   </div>
@@ -309,6 +319,16 @@
     <div class="ach-sum"><span class="big" id="achBig">0/0</span><div class="bar"><i id="achBar" style="width:0%"></i></div></div>
     <div class="ach-grid" id="achGrid"></div>
   </section>
+  <!-- AJUSTES -->
+  <section class="view" id="v-ajustes" aria-label="Ajustes" hidden>
+    <div class="sec-head"><h2 class="h2">Ajustes</h2><p class="lead">Instala la web como app, activa los avisos del pomodoro y guarda una copia de tu progreso para no perderlo nunca.</p></div>
+    <div class="aj-grid">
+      <article class="card" id="ajApp"></article>
+      <article class="card" id="ajNotif"></article>
+      <article class="card span2" id="ajBackup"></article>
+      <article class="card span2 aj-danger" id="ajDanger"></article>
+    </div>
+  </section>
 </main>
 </div>
 
@@ -349,6 +369,7 @@
 <script src="js/data/niveles.js"></script>
 <script src="js/core/estado.js"></script>
 <script src="js/core/recompensas.js"></script>
+<script src="js/core/pwa.js"></script>
 <script src="js/ui/efectos.js"></script>
 <script src="js/ui/fondo.js"></script>
 <script src="js/ui/navegacion.js"></script>
@@ -360,6 +381,7 @@
 <script src="js/features/habitos.js"></script>
 <script src="js/features/avatar.js"></script>
 <script src="js/features/progreso.js"></script>
+<script src="js/features/ajustes.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

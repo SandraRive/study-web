@@ -20,7 +20,7 @@
 .hud-chip.timer{background:var(--pink);color:var(--on-acc)}
 .hud-chip.timer.short{background:var(--mint)}
 .hud-chip.timer.long{background:var(--cobalt);color:var(--on-cobalt)}
-@media (min-width:1160px){.tabs{order:0;flex:1 1 auto;justify-content:center}}
+@media (min-width:1340px){.tabs{order:0;flex:1 1 auto;justify-content:center}}
 .marquee{background:var(--pink);color:var(--on-acc);border-top:3px solid var(--line);margin-bottom:-3px;overflow:hidden;white-space:nowrap}
 .marquee-track{display:flex;justify-content:center;gap:26px;padding:7px 16px;font:800 12px var(--f-display);text-transform:uppercase;letter-spacing:.1em;align-items:center}
 .marquee-track .ico{width:14px;height:14px}

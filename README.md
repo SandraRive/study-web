@@ -13,12 +13,23 @@ Está hecha con HTML, CSS y JavaScript, sin frameworks, sin dependencias y sin p
 - **Hábitos**: técnicas de estudio por ámbito y apartado.
 - **Avatar**: 26 personajes y decenas de objetos desbloqueables por nivel, por logros o en la tienda con monedas.
 - **Progreso**: calendario de días de estudio, minutos por semana, reparto por ámbito, metas semanales y logros.
+- **Ajustes**: instalar la web como app, avisos del pomodoro y copia de seguridad (exportar e importar el progreso).
+
+## App instalable (PWA)
+
+- Se instala desde **Ajustes** o desde el menú del navegador. En iPhone: *Compartir → Añadir a pantalla de inicio*.
+- Funciona **sin conexión**: `sw.js` guarda todos los archivos en el dispositivo. Con conexión siempre carga la versión más reciente.
+- Si **añades o quitas archivos**, actualiza la lista `APP` de `sw.js` y sube `VERSION`.
+- Los **avisos** usan las notificaciones del navegador. Con el móvil bloqueado, el sistema puede pausar la web hasta que vuelvas a abrirla.
 
 ## Estructura
 
 ```
 study-web/
 ├── index.html              Estructura de la página
+├── manifest.webmanifest    Datos de la app instalable (nombre, iconos, colores)
+├── sw.js                   Service worker: funcionamiento sin conexión y avisos
+├── icons/                  Iconos de la app
 ├── css/
 │   ├── tokens.css          Colores, tipografías y fondo espacial
 │   ├── base.css            Reinicio y estilos generales
@@ -33,11 +44,13 @@ study-web/
 │   ├── progreso.css
 │   ├── modo-foco.css       Temporizador a pantalla completa
 │   ├── avisos.css          Notificaciones y ventana de nivel
+│   ├── ajustes.css         Instalación, avisos y copia de seguridad
 │   └── responsive.css      Ajustes para móvil (siempre el último)
 └── js/
     ├── core/
     │   ├── utilidades.js   Selectores, fechas e iconos
     │   ├── estado.js       Estado y guardado en localStorage
+    │   ├── pwa.js          Instalación, actualizaciones y avisos
     │   └── recompensas.js  XP, monedas, logros, retos y metas
     ├── data/
     │   ├── habitos.js      Contenido de las técnicas de estudio
@@ -55,7 +68,8 @@ study-web/
     │   ├── sonidos.js
     │   ├── habitos.js
     │   ├── avatar.js
-    │   └── progreso.js
+    │   ├── progreso.js
+    │   └── ajustes.js      Ajustes y copia de seguridad
     └── main.js             Eventos y arranque
 ```
 
@@ -73,4 +87,4 @@ Abre `index.html` en el navegador o visita la versión publicada en GitHub Pages
 
 ## Datos
 
-El progreso se guarda en el `localStorage` del navegador, en la clave `mision-estudio-v1`. Los datos son locales a cada navegador y dominio: no se comparten entre dispositivos y se pierden si borras los datos del sitio.
+El progreso se guarda en el `localStorage` del navegador, en la clave `mision-estudio-v1`. Los datos son locales a cada navegador y dominio. Para pasarlos a otro dispositivo o tener una copia, usa **Ajustes → Copia de seguridad**: descarga un archivo `.json` con todo el progreso e impórtalo donde quieras.

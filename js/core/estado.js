@@ -8,14 +8,15 @@ const DEFAULT={name:'',xp:0,coins:0,coinsEarned:0,owned:{},avatar:{base:'gato',c
  day:{date:null,pomos:0,tasks:0,tips:0,minutes:0,claimed:{},allDone:false},
  counts:{tasksDone:0,challengesDays:0,closes:0,cardsOk:0,errorsFixed:0,goalsDone:0},
  topics:[],cards:[],errors:[],log:{},goals:{pomos:20,minutes:600,tasks:15,cards:100,days:5},goalsClaimed:{},
- settings:{work:25,short:5,long:15,every:4,auto:false,chime:true},
+ settings:{work:25,short:5,long:15,every:4,auto:false,chime:true,notify:false},lastBackup:null,
  timer:{mode:'work',remaining:1500,endAt:null,running:false,cycle:0,taskId:null},
  ui:{tab:'inicio',amb:'base',sub:0,filter:'all',cat:'base',baseSet:'clasicos',tem:'temas',temScope:'all',tpSel:null,fcTopic:'all',erFilter:'pend',erReason:'all',erTp:'all'},
  audio:{master:.8,vols:{lofi:.7,lluvia:.6,fuego:.6,olas:.6,blanco:.5,rosa:.5,marron:.6}},
  soundsUsed:false,maxSounds:0};
 function load(){let s=null;try{s=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}const d=JSON.parse(JSON.stringify(DEFAULT));if(s&&typeof s==='object'){for(const k in d){if(s[k]===undefined)continue;if(d[k]&&typeof d[k]==='object'&&!Array.isArray(d[k]))d[k]=Object.assign(d[k],s[k]);else d[k]=s[k];}}return d;}
 let state=load();
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+let SAVE_LOCK=false;
+function save(){if(SAVE_LOCK)return;try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 function streakNow(){const s=state.streak;return (s.last===today()||s.last===yesterday())?s.count:0;}
 function bumpStreak(){const t=today(),s=state.streak;if(s.last===t)return;s.count=(s.last===yesterday())?s.count+1:1;s.last=t;}
 function logDay(){const t=today();if(!state.log[t])state.log[t]={min:0,pomos:0,tasks:0,cards:0,sc:{}};return state.log[t];}

@@ -1,0 +1,24 @@
+{
+  "name": "Misión Estudio",
+  "short_name": "Misión Estudio",
+  "description": "Hábitos de estudio gamificados: pomodoro, tareas, temario con repaso espaciado, flashcards, sonidos y avatares.",
+  "lang": "es",
+  "dir": "ltr",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#03050C",
+  "theme_color": "#03050C",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Empezar a estudiar", "short_name": "Foco", "url": "./#foco", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Temario y repasos", "short_name": "Temario", "url": "./#temario", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
