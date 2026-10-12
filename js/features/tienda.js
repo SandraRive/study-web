@@ -7,7 +7,7 @@ let shopPending=null;
 /* ---- Protector de racha: se usa solo al volver si faltaste algún día ---- */
 function applyFreeze(){
  const s=state.streak,t=today();if(!s.last||s.count<=0||s.last>=yesterday())return;
- const missed=daysBetween(s.last,t)-1;if(missed<=0||state.freezes<missed)return;
+ const missed=daysBetween(s.last,t)-1;if(missed<=0)return;if(state.freezes<missed){checkStreakLoss();return;}
  state.freezes-=missed;for(let i=1;i<=missed;i++)state.frozen.push(addDays(s.last,i));
  state.frozen=state.frozen.slice(-90);s.last=yesterday();save();
  setTimeout(()=>toast(`<b>Protector de racha usado</b> · Faltaste ${missed===1?'1 día':missed+' días'} y tu racha de ${s.count} ${s.count===1?'día':'días'} sigue viva.`,'shield','ach'),700);}

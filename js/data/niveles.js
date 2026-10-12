@@ -34,6 +34,8 @@ const ACH=[
  {id:'jefe5',name:'Leyenda de la arena',desc:'Derrota a 5 jefes semanales',icon:'crown',xp:250,p:s=>[Math.min(s.counts.bossWins||0,5),5]},
  {id:'cofre7',name:'Buscatesoros',desc:'Abre el cofre diario 7 días seguidos',icon:'gift',xp:80,p:s=>[Math.min(s.chest.date&&s.chest.date>=yesterday()?s.chest.streak:0,7),7]},
  {id:'tema1',name:'Decorador/a',desc:'Desbloquea un escenario de la web',icon:'star',xp:40,p:s=>[Object.keys(s.themes).filter(k=>k!=='espacio').length?1:0,1]},
+ {id:'fenix',name:'Ave fénix',desc:'Repara una racha perdida',icon:'flame',xp:40,p:s=>[Math.min(s.counts.repairs||0,1),1]},
+ {id:'revancha',name:'Revancha cumplida',desc:'Derrota a un jefe que había vuelto para su revancha',icon:'trophy',xp:150,p:s=>[Math.min(s.counts.revengeWins||0,1),1]},
  {id:'ambiente',name:'Ambiente creado',desc:'Activa tu primer sonido',icon:'music',xp:15,p:s=>[s.soundsUsed?1:0,1]},
  {id:'dj',name:'DJ de biblioteca',desc:'Mezcla 3 sonidos a la vez',icon:'headphones',xp:30,p:s=>[Math.min(s.maxSounds,3),3]},
  {id:'retos',name:'Retador/a',desc:'Completa los 3 retos de un mismo día',icon:'target',xp:80,p:s=>[Math.min(s.counts.challengesDays,1),1]},

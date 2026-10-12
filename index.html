@@ -78,6 +78,7 @@
       <div class="stats" id="stats"></div>
     </div>
     <button class="chest-banner" id="chestBanner" data-act="chest-open" hidden></button>
+    <button class="repair-banner" id="repairBanner" data-act="repair-open" hidden></button>
     <article class="card exam-card" id="examCard"></article>
     <article class="card boss-card" id="bossCard"></article>
     <div class="home-grid">
@@ -331,6 +332,7 @@
         <div id="goalList"></div>
       </article>
     </div>
+    <article class="card boss-gallery" id="bossGallery"></article>
     <h3 class="h2" style="font-size:clamp(24px,3.4vw,34px)">Logros</h3>
     <div class="ach-sum"><span class="big" id="achBig">0/0</span><div class="bar"><i id="achBar" style="width:0%"></i></div></div>
     <div class="ach-grid" id="achGrid"></div>
@@ -365,6 +367,9 @@
   </div>
 </div>
 
+<div class="modal" id="backModal" hidden>
+  <div class="card modal-card back-card" role="dialog" aria-modal="true" aria-label="Mientras no estabas"><div id="backBody"></div></div>
+</div>
 <div class="modal" id="chestModal" hidden>
   <div class="card modal-card chest-card" role="dialog" aria-modal="true" aria-label="Cofre diario"><div id="chestBody"></div></div>
 </div>
@@ -406,6 +411,7 @@
 <script src="js/features/jefe.js"></script>
 <script src="js/features/cofre.js"></script>
 <script src="js/features/tienda.js"></script>
+<script src="js/features/regreso.js"></script>
 <script src="js/features/ajustes.js"></script>
 <script src="js/main.js"></script>
 </body>
