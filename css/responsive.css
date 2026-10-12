@@ -9,7 +9,7 @@
 }
 @media (max-width:560px){
   .top-in{padding:8px 16px}
-  .wrap{padding-inline:16px;padding-block:22px 90px}
+  .wrap{padding-inline:16px;padding-block:22px calc(90px + env(safe-area-inset-bottom,0px))}
   .brand small{display:none}
   .brand>span:last-child{display:none}
   .player{grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center}

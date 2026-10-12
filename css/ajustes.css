@@ -38,5 +38,3 @@
 .hud-dot{position:absolute;top:-5px;right:-5px;width:13px;height:13px;border-radius:50%;background:var(--pink);border:2px solid var(--line)}
 @media (max-width:1000px){.aj-grid,.bk-cols{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:420px){.imp-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
-/* Con la app instalada, deja sitio a la barra de estado del móvil */
-@media (display-mode: standalone){body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}}

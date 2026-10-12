@@ -1,5 +1,5 @@
 /* ---------- Base UI ---------- */
-.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:30px 90px}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:30px calc(90px + env(safe-area-inset-bottom,0px))}
 .card{background:var(--surface);border:3px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:22px;min-width:0}
 .card-title{font:800 18px/1.2 var(--f-display);letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
 .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
