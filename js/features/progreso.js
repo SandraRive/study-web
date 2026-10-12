@@ -3,7 +3,7 @@
 
 /* ================= PROGRESO-UI ================= */
 function bestStreak(){const ds=Object.keys(state.log).filter(d=>isActive(state.log[d])).sort();let best=0,cur=0,prev=null;for(const d of ds){cur=(prev&&daysBetween(prev,d)===1)?cur+1:1;if(cur>best)best=cur;prev=d;}return Math.max(best,streakNow(),state.bestStreak||0);}
-function renderProgreso(){renderBossGallery();const logs=Object.values(state.log);const totalMin=logs.reduce((n,L)=>n+L.min,0);const days=logs.filter(isActive).length;
+function renderProgreso(){renderBossGallery();if(typeof renderDistStats==='function'){renderDistStats();renderDiaryLog();}const logs=Object.values(state.log);const totalMin=logs.reduce((n,L)=>n+L.min,0);const days=logs.filter(isActive).length;
  const tiles=[['Foco total','timer',totalMin>=60?Math.floor(totalMin/60):totalMin,totalMin>=60?'h':'min','pink'],['Días de estudio','calendar',days,'','mint'],['Mejor racha','flame',bestStreak(),'días','orange'],['Media por día','chart',days?Math.round(totalMin/days):0,'min','cobalt']];
  $('#pgTiles').innerHTML=tiles.map(([l,i,v,u,c])=>`<div class="stat" style="${cvar(c)}"><div class="stat-top">${l}${ico(i)}</div><div class="stat-num">${v}<small>${u}</small></div></div>`).join('');
  $('#heatTitle').innerHTML=`${ico('calendar')}Días de estudio`;$('#wTitle').innerHTML=`${ico('chart')}Minutos por semana`;$('#scTitle').innerHTML=`${ico('target')}En qué ámbito estudias`;$('#goalTitle').innerHTML=`${ico('flag')}Metas de la semana`;

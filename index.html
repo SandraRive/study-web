@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="css/oposicion.css">
 <link rel="stylesheet" href="css/enganche.css">
 <link rel="stylesheet" href="css/ajustes.css">
+<link rel="stylesheet" href="css/calidad.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -81,6 +82,7 @@
     <button class="repair-banner" id="repairBanner" data-act="repair-open" hidden></button>
     <article class="card exam-card" id="examCard"></article>
     <article class="card boss-card" id="bossCard"></article>
+    <article class="card diary-card" id="diaryCard"></article>
     <div class="home-grid">
       <article class="card">
         <div class="card-head"><h2 class="card-title" id="chTitle"></h2><span class="chip">+40 XP cada uno</span></div>
@@ -124,7 +126,7 @@
           <button class="btn play-big js-play" data-act="t-toggle" aria-label="Empezar"></button>
           <button class="btn round" data-act="t-skip" aria-label="Saltar al siguiente modo"></button>
         </div>
-        <button class="btn sm" data-act="zen-open" id="zenBtn"></button>
+        <div class="pomo-extra"><button class="btn sm" data-act="zen-open" id="zenBtn"></button><button class="btn sm dist-btn" data-act="dist-open" title="Atajo: tecla D"></button></div>
         <div class="focus-task">
           <label for="focusSel">Trabajando en</label>
           <select class="inp" id="focusSel"></select>
@@ -332,6 +334,7 @@
         <div id="goalList"></div>
       </article>
     </div>
+    <div class="pg-grid"><article class="card" id="distCard"></article><article class="card" id="diaryLog"></article></div>
     <article class="card boss-gallery" id="bossGallery"></article>
     <h3 class="h2" style="font-size:clamp(24px,3.4vw,34px)">Logros</h3>
     <div class="ach-sum"><span class="big" id="achBig">0/0</span><div class="bar"><i id="achBar" style="width:0%"></i></div></div>
@@ -364,9 +367,13 @@
       <button class="btn round" data-act="t-skip" aria-label="Saltar al siguiente modo"></button>
     </div>
     <div class="dots" id="zDots"></div>
+    <button class="btn sm dist-btn zen-dist" data-act="dist-open"></button>
   </div>
 </div>
 
+<div class="modal dist-modal" id="distModal" hidden>
+  <div class="card modal-card dist-card" role="dialog" aria-modal="true" aria-label="Apuntar distracción"><div id="distBody"></div></div>
+</div>
 <div class="modal" id="backModal" hidden>
   <div class="card modal-card back-card" role="dialog" aria-modal="true" aria-label="Mientras no estabas"><div id="backBody"></div></div>
 </div>
@@ -406,6 +413,8 @@
 <script src="js/features/avatar.js"></script>
 <script src="js/features/progreso.js"></script>
 <script src="js/features/examen.js"></script>
+<script src="js/features/distracciones.js"></script>
+<script src="js/features/diario.js"></script>
 <script src="js/features/simulacro.js"></script>
 <script src="js/features/plan.js"></script>
 <script src="js/features/jefe.js"></script>

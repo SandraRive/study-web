@@ -34,6 +34,8 @@ const ACH=[
  {id:'jefe5',name:'Leyenda de la arena',desc:'Derrota a 5 jefes semanales',icon:'crown',xp:250,p:s=>[Math.min(s.counts.bossWins||0,5),5]},
  {id:'cofre7',name:'Buscatesoros',desc:'Abre el cofre diario 7 días seguidos',icon:'gift',xp:80,p:s=>[Math.min(s.chest.date&&s.chest.date>=yesterday()?s.chest.streak:0,7),7]},
  {id:'tema1',name:'Decorador/a',desc:'Desbloquea un escenario de la web',icon:'star',xp:40,p:s=>[Object.keys(s.themes).filter(k=>k!=='espacio').length?1:0,1]},
+ {id:'detective',name:'Detective del foco',desc:'Apunta 10 distracciones para descubrir qué te roba el foco',icon:'eye',xp:40,p:s=>[Math.min((s.dist||[]).length,10),10]},
+ {id:'diario7',name:'Cuaderno de bitácora',desc:'Cierra el día en tu diario 7 veces',icon:'pen',xp:60,p:s=>[Math.min(Object.keys(s.diary||{}).length,7),7]},
  {id:'fenix',name:'Ave fénix',desc:'Repara una racha perdida',icon:'flame',xp:40,p:s=>[Math.min(s.counts.repairs||0,1),1]},
  {id:'revancha',name:'Revancha cumplida',desc:'Derrota a un jefe que había vuelto para su revancha',icon:'trophy',xp:150,p:s=>[Math.min(s.counts.revengeWins||0,1),1]},
  {id:'ambiente',name:'Ambiente creado',desc:'Activa tu primer sonido',icon:'music',xp:15,p:s=>[s.soundsUsed?1:0,1]},
