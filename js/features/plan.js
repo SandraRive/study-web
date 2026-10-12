@@ -34,7 +34,7 @@ function planFormHTML(d){
   <div class="pform-row"><label for="pAct">Actividad<select class="inp" id="pAct">${Object.entries(ACTS).map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select></label>
   <label for="pN">Bloques<input class="inp" type="number" id="pN" min="1" max="12" value="2"></label></div>
   <div class="aj-actions"><button class="btn sun sm" type="submit">${ico('plus')}Añadir</button><button class="btn ghost sm" type="button" data-act="plan-cancel">Cancelar</button></div></form>`;}
-function autoHTML(){const sc=(state.exam&&state.exam.scope)||'opo';
+function autoHTML(){const ce=typeof curExam==='function'?curExam():null;const sc=ce?ce.type:'opo';
  return `<form class="card pauto" id="planAuto" autocomplete="off"><div class="card-head"><h3 class="card-title">${ico('shuffle')}Reparto automático</h3><button class="btn sm ghost" type="button" data-act="plan-auto">Cerrar</button></div>
  <p class="hint">Reparte tus temas por los días que elijas, empezando por los que llevan menos vueltas y menos dominio. Solo rellena desde hoy en adelante.</p>
  <fieldset class="pauto-days"><legend>Días</legend>${DOW.map((l,i)=>`<label for="pa${i}"><input type="checkbox" id="pa${i}" ${i<5?'checked':''}><span>${l}</span></label>`).join('')}</fieldset>
