@@ -114,3 +114,25 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 /* Días salvados por el protector en el calendario de Progreso */
 .hc[data-l="ice"]{background:#7FEFFF;box-shadow:0 0 6px rgba(127,239,255,.6)}
 @media (prefers-reduced-motion:reduce){.boss-art svg,.chest-svg{animation:none!important}}
+
+/* ---------- Golpe al jefe en mitad de la pantalla ---------- */
+.boss-pop{position:fixed;inset:0;z-index:78;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle at 50% 42%,rgba(0,0,0,.62),rgba(0,0,0,.25) 55%,transparent 80%);animation:bpIn .25s ease-out}
+.boss-pop.out{opacity:0;transition:opacity .4s}
+.bp-card{display:flex;flex-direction:column;align-items:center;gap:8px;width:min(80vw,300px);margin-bottom:16vh;animation:bpPop .45s cubic-bezier(.2,1.5,.4,1)}
+.bp-art{position:relative;width:min(56vw,190px)}
+.bp-art svg{width:100%;height:auto;display:block;animation:bossHit .45s ease-in-out 2;transform-origin:50% 90%}
+.bp-card.win .bp-art svg{animation:bpFall 1s ease-in forwards}
+.bp-dmg{position:absolute;left:50%;top:6%;transform:translateX(-50%);font:900 clamp(40px,10vw,58px)/1 var(--f-display);color:#fff;white-space:nowrap;text-shadow:0 0 18px var(--pink),0 0 34px var(--pink),0 4px 0 #000;animation:bpDmg 1.6s cubic-bezier(.2,.8,.3,1) forwards}
+.bp-name{font:900 18px var(--f-display);color:#fff;text-align:center;text-shadow:0 2px 0 #000,0 0 12px rgba(0,0,0,.8)}
+.bp-bar{position:relative;width:100%;height:22px;border:3px solid #000;border-radius:999px;background:#1A1F33;overflow:hidden;box-shadow:0 4px 0 #000}
+.bp-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px}
+.bp-ghost{background:#fff;transition:width .6s ease .55s}
+.bp-fill{background:linear-gradient(90deg,#FF2E4D,#FF8A3D);transition:width .45s cubic-bezier(.2,.8,.2,1) .15s}
+.bp-hp{font:700 13px var(--f-mono);color:#fff;text-shadow:0 2px 0 #000;font-variant-numeric:tabular-nums}
+.bp-hp b{font-size:16px}
+.bp-win{font:900 30px var(--f-display);color:var(--mint);border:4px solid var(--mint);border-radius:12px;padding:2px 14px;background:rgba(0,0,0,.6);transform:rotate(-8deg);animation:bpPop .5s cubic-bezier(.2,1.6,.4,1) .3s both}
+@keyframes bpIn{from{opacity:0}}
+@keyframes bpPop{from{opacity:0;transform:scale(.6)}}
+@keyframes bpDmg{0%{opacity:0;transform:translate(-50%,20px) scale(.6)}15%{opacity:1;transform:translate(-50%,-6px) scale(1.15)}70%{opacity:1;transform:translate(-50%,-24px) scale(1)}100%{opacity:0;transform:translate(-50%,-50px)}}
+@keyframes bpFall{0%{transform:none;filter:brightness(2)}40%{transform:rotate(-6deg)}100%{transform:translateY(12px) rotate(8deg) scale(.92);filter:grayscale(.85) brightness(.75)}}
+@media (prefers-reduced-motion:reduce){.boss-pop,.bp-card,.bp-art svg,.bp-dmg,.bp-win{animation:none!important}.bp-bar i{transition:none!important}}

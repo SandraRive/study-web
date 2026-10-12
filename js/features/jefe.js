@@ -46,15 +46,29 @@ function ensureBoss(){
  const lv=levelInfo(state.xp).level,max=500+25*(Math.min(lv,30)-1);
  const r=rng('jefe-'+ws);let id=BOSS_IDS[Math.floor(r()*BOSS_IDS.length)];if(b&&b.id===id)id=BOSS_IDS[(BOSS_IDS.indexOf(id)+1)%BOSS_IDS.length];
  state.boss={week:ws,id,max,hp:max,won:false,wonAt:null,hits:[]};return !!b;}
-function bossHit(n,why,quiet){
+function bossHit(n,why){
  ensureBoss();const b=state.boss;n=Math.round(n);if(b.won||n<=0)return;
- b.hp=Math.max(0,b.hp-n);b.hits.unshift({n,why,at:Date.now()});b.hits=b.hits.slice(0,5);bossFx=Date.now();
+ const from=b.hp;b.hp=Math.max(0,b.hp-n);b.hits.unshift({n,why,at:Date.now()});b.hits=b.hits.slice(0,5);bossFx=Date.now();
  const name=BOSSES[b.id].name;
  if(b.hp<=0){b.won=true;b.wonAt=Date.now();state.counts.bossWins=(state.counts.bossWins||0)+1;
   const prot=state.freezes<3;if(prot)state.freezes++;
   grantXP(250,'¡Jefe derrotado!',prot?120:170,true);
   toast(`<b>¡Has derrotado a ${esc(name)}!</b><br>+250 XP · ${prot?'+120 monedas · +1 protector de racha':'+170 monedas'}`,'trophy','ach');confetti(220);}
- else if(!quiet)toast(`<b>−${n} PV</b> a ${esc(name)} · ${esc(why)}`,'bolt');}
+ showBossHit(n,from,b.hp,b.max,b.id,b.won,why);}
+
+/* ---- Animación de golpe en mitad de la pantalla (no bloquea nada y se va sola) ---- */
+const bossPop={timer:null,dmg:0,from:0};
+function showBossHit(n,from,to,max,id,won,why){
+ let el=$('#bossPop');
+ if(!el){el=document.createElement('div');el.id='bossPop';el.className='boss-pop';el.setAttribute('aria-hidden','true');el.hidden=true;document.body.appendChild(el);}
+ if(bossPop.timer&&!el.hidden){bossPop.dmg+=n;}else{bossPop.dmg=n;bossPop.from=from;}
+ clearTimeout(bossPop.timer);
+ const pf=bossPop.from/max*100,pt=to/max*100;
+ el.innerHTML=`<div class="bp-card${won?' win':''}"><div class="bp-art">${bossSVG(id,won)}<span class="bp-dmg">−${bossPop.dmg}</span></div><div class="bp-name">${esc(BOSSES[id].name)}</div><div class="bp-bar"><i class="bp-ghost" style="width:${pf}%"></i><i class="bp-fill" style="width:${pf}%"></i></div><div class="bp-hp"><b>${to}</b> / ${max} PV${why?` · ${esc(why)}`:''}</div>${won?'<div class="bp-win">¡Derrotado!</div>':''}</div>`;
+ el.classList.remove('out');el.hidden=false;
+ const fill=el.querySelector('.bp-fill'),ghost=el.querySelector('.bp-ghost');
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{if(fill)fill.style.width=pt+'%';if(ghost)ghost.style.width=pt+'%';}));
+ bossPop.timer=setTimeout(()=>{el.classList.add('out');bossPop.timer=setTimeout(()=>{el.hidden=true;el.classList.remove('out');bossPop.timer=null;},400);},won?2800:1800);}
 
 function renderBoss(){
  const el=$('#bossCard');if(!el)return;ensureBoss();
