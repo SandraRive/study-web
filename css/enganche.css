@@ -172,11 +172,11 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 .bg-tile b{font:800 12.5px/1.2 var(--f-display);text-wrap:balance}
 .bg-art{width:76px;display:block}
 .bg-art svg{width:100%;display:block}
-.bg-tile.unknown .bg-art svg{filter:brightness(0) opacity(.45)}
+.bg-tile.unknown .bg-art svg{filter:brightness(0) invert(.8) opacity(.32)}
 .bg-tile.unknown b{color:var(--muted)}
 .bg-unknown{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}
 .bg-sil{display:block;padding:4px;border:2px solid var(--line);border-radius:10px;background:var(--surface-2)}
-.bg-sil svg{width:100%;display:block;filter:brightness(0) opacity(.4)}
+.bg-sil svg{width:100%;display:block;filter:brightness(0) invert(.8) opacity(.32)}
 .bg-sil.final{border-color:var(--sun);box-shadow:0 0 0 2px rgba(255,200,60,.15)}
 .bg-tile.won{box-shadow:4px 4px 0 var(--mint)}
 .bg-chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
