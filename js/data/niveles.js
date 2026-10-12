@@ -41,6 +41,8 @@ const ACH=[
  {id:'aptaTodo',name:'Apta en todo',desc:'Supera el mínimo en todas tus pruebas físicas (al menos 3)',icon:'shield',xp:150,p:s=>{const T=((s.phys&&s.phys.tests)||[]).filter(t=>t.min!=null);const ok=T.filter(t=>t.marks.some(m=>t.better==='low'?m.v<=t.min:m.v>=t.min)).length;return [T.length>=3?ok:Math.min(ok,2),T.length>=3?T.length:3];}},
  {id:'cuidado7',name:'Mente sana',desc:'Cumple tu autocuidado 7 días seguidos (3 de 4 objetivos)',icon:'sparkle',xp:80,p:s=>[Math.min(typeof careBest==='function'?careBest():0,7),7]},
  {id:'pase30',name:'Leyenda de temporada',desc:'Llega al nivel 30 de un pase de temporada',icon:'crown',xp:150,p:s=>[Math.min(Math.max(s.season?Math.min(30,Math.floor(s.season.pts/150)+1):0,...(s.seasonHist||[]).map(h=>h.lvl)),30),30]},
+ {id:'mascota1',name:'¡Ha nacido!',desc:'Adopta una mascota y haz que salga del huevo',icon:'sparkle',xp:40,p:s=>[s.pet&&s.pet.species&&s.pet.xp>=25?1:0,1]},
+ {id:'mascota3',name:'Criadora experta',desc:'Haz que tu mascota llegue a su forma mayor (50 h de foco)',icon:'sparkle',xp:150,p:s=>[Math.min(s.pet&&s.pet.xp||0,3000),3000]},
  {id:'fenix',name:'Ave fénix',desc:'Repara una racha perdida',icon:'flame',xp:40,p:s=>[Math.min(s.counts.repairs||0,1),1]},
  {id:'revancha',name:'Revancha cumplida',desc:'Derrota a un jefe que había vuelto para su revancha',icon:'trophy',xp:150,p:s=>[Math.min(s.counts.revengeWins||0,1),1]},
  {id:'ambiente',name:'Ambiente creado',desc:'Activa tu primer sonido',icon:'music',xp:15,p:s=>[s.soundsUsed?1:0,1]},

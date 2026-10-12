@@ -38,6 +38,7 @@
 <link rel="stylesheet" href="css/informe.css">
 <link rel="stylesheet" href="css/diaadia.css">
 <link rel="stylesheet" href="css/temporada.css">
+<link rel="stylesheet" href="css/mascota.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -88,6 +89,7 @@
     <article class="card season-card" id="seasonCard"></article>
     <article class="card exam-card" id="examCard"></article>
     <article class="card boss-card" id="bossCard"></article>
+    <article class="card pet-card" id="petCard"></article>
     <article class="card care-card" id="careCard"></article>
     <article class="card diary-card" id="diaryCard"></article>
     <div class="home-grid">
@@ -133,6 +135,7 @@
           <button class="btn play-big js-play" data-act="t-toggle" aria-label="Empezar"></button>
           <button class="btn round" data-act="t-skip" aria-label="Saltar al siguiente modo"></button>
         </div>
+        <div class="pet-mini" id="petMini" hidden></div>
         <div class="pomo-extra"><button class="btn sm" data-act="zen-open" id="zenBtn"></button><button class="btn sm dist-btn" data-act="dist-open" title="Atajo: tecla D"></button></div>
         <div class="focus-task">
           <label for="focusSel">Trabajando en</label>
@@ -405,6 +408,9 @@
 <div class="modal sync-modal" id="syncModal" hidden>
   <div class="card modal-card sync-card" role="dialog" aria-modal="true" aria-label="Pasar el progreso a otro dispositivo"><div id="syncBody"></div></div>
 </div>
+<div class="modal pet-modal" id="petModal" hidden>
+  <div class="card modal-card pet-mcard" role="dialog" aria-modal="true" aria-label="Tu mascota"><div id="petModalBody"></div></div>
+</div>
 <div class="modal" id="backModal" hidden>
   <div class="card modal-card back-card" role="dialog" aria-modal="true" aria-label="Mientras no estabas"><div id="backBody"></div></div>
 </div>
@@ -453,6 +459,7 @@
 <script src="js/features/sincro.js"></script>
 <script src="js/features/cuidado.js"></script>
 <script src="js/features/temporada.js"></script>
+<script src="js/features/mascota.js"></script>
 <script src="js/features/simulacro.js"></script>
 <script src="js/features/plan.js"></script>
 <script src="js/features/jefe.js"></script>

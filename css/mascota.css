@@ -1,0 +1,61 @@
+/* ---------- Mascota de estudio ---------- */
+.pet-card{margin-top:22px;display:flex;flex-direction:column;gap:12px}
+.pet-card .card-head{margin-bottom:0}
+.pet-name{cursor:pointer;border-bottom:2px dashed transparent}
+.pet-name:hover{border-bottom-color:var(--muted)}
+.pet-ed{width:14px!important;height:14px!important;opacity:.5}
+.pet-wrap{display:flex;gap:18px;align-items:center}
+.pet-stage{position:relative;width:170px;flex:none;aspect-ratio:1;border:3px solid var(--line);border-radius:22px;cursor:pointer;background:radial-gradient(circle at 50% 70%,rgba(255,255,255,.08),transparent 60%),linear-gradient(180deg,#1B2656,#0E1640);overflow:hidden;-webkit-tap-highlight-color:transparent}
+.pet-card.m-sleep .pet-stage,.pet-card.m-gloom .pet-stage{background:linear-gradient(180deg,#0B1030,#05081A)}
+.pet-card.m-happy .pet-stage{background:radial-gradient(circle at 50% 70%,rgba(255,225,77,.22),transparent 60%),linear-gradient(180deg,#1B2656,#0E1640)}
+.pet-svg{width:100%;height:100%;display:block}
+.pet-body{transform-origin:80px 150px;animation:petIdle 2.6s ease-in-out infinite}
+.m-happy .pet-body{animation:petBounce 1.1s ease-in-out infinite}
+.m-sad .pet-body,.m-hungry .pet-body{animation:petIdle 4s ease-in-out infinite}
+.m-gloom .pet-body,.m-sleep .pet-body{animation:petSleep 4.5s ease-in-out infinite}
+.m-egg .pet-body{animation:petWobble 2.2s ease-in-out infinite}
+.pet-eye{animation:petBlink 4.5s infinite;transform-box:fill-box;transform-origin:center}
+.pet-z{animation:petZ 2.6s ease-in-out infinite}
+.pet-z.z2{animation-delay:1.3s}
+.pet-svg.jump .pet-body{animation:petJump .55s cubic-bezier(.3,1.6,.5,1)}
+.pet-fx{position:absolute;bottom:45%;font-size:28px;pointer-events:none;animation:petFx 1.2s ease-out forwards}
+.pet-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:9px}
+.pet-mood{margin:0;font-weight:700;font-size:15px;line-height:1.4}
+.pet-st{display:flex;flex-direction:column;gap:4px}
+.pet-st>span:first-child{font:700 11.5px var(--f-mono);color:var(--muted)}
+.care-bar.food i{background:#FF8A3D}
+.care-bar.joy i{background:#FF6FB0}
+.care-bar.grow i{background:var(--sun)}
+.pet-pick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.pet-opt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px;border:3px solid var(--line);border-radius:16px;background:var(--surface-2);color:var(--ink);font:inherit;text-align:center;cursor:pointer}
+.pet-opt:hover{border-color:var(--sun);transform:translate(-2px,-2px);box-shadow:4px 4px 0 #000}
+.pet-opt-art{width:110px;display:block}
+.pet-opt b{font:900 17px var(--f-display)}
+.pet-opt>span:last-child{font-size:13px;color:var(--muted)}
+/* En Foco */
+.pet-mini{display:flex;align-items:center;gap:8px;font:700 12px var(--f-mono);color:var(--muted)}
+.pet-mini svg{width:54px;height:54px}
+.pet-mini svg.studying .pet-body{animation:petNod 1.6s ease-in-out infinite}
+.pomo .pet-mini{justify-content:center;color:inherit;opacity:.9}
+/* Evolución */
+.pet-modal{z-index:92}
+.pet-mcard{max-width:420px}
+#petModalBody{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.pet-evo{position:relative;width:200px;height:200px}
+.pet-evo svg{position:absolute;inset:0}
+.evo-from{animation:evoOut 1.4s ease-in forwards}
+.evo-to{opacity:0;animation:evoIn 1s cubic-bezier(.2,1.5,.4,1) 1.2s forwards}
+.pet-evo-t{margin:0;font:900 21px/1.2 var(--f-display);text-wrap:balance}
+@keyframes petIdle{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-3px) scale(1.02,.98)}}
+@keyframes petBounce{0%,100%{transform:translateY(0) scale(1,1)}30%{transform:translateY(-10px) scale(.97,1.04)}60%{transform:translateY(0) scale(1.05,.95)}}
+@keyframes petSleep{0%,100%{transform:scale(1,1)}50%{transform:scale(1.03,.97)}}
+@keyframes petWobble{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-7deg)}80%{transform:rotate(6deg)}90%{transform:rotate(-3deg)}}
+@keyframes petBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes petZ{0%{opacity:0;transform:translate(0,6px)}40%{opacity:1}100%{opacity:0;transform:translate(8px,-14px)}}
+@keyframes petJump{0%{transform:translateY(0)}40%{transform:translateY(-22px) scale(.95,1.06)}70%{transform:translateY(0) scale(1.08,.92)}100%{transform:none}}
+@keyframes petFx{0%{opacity:0;transform:translateY(10px) scale(.6)}20%{opacity:1;transform:translateY(-6px) scale(1.15)}100%{opacity:0;transform:translateY(-70px) scale(1)}}
+@keyframes petNod{0%,100%{transform:rotate(0)}50%{transform:rotate(4deg) translateY(2px)}}
+@keyframes evoOut{0%{filter:none}30%,50%,70%{filter:brightness(4)}40%,60%{filter:none}100%{filter:brightness(6);opacity:0;transform:scale(1.2)}}
+@keyframes evoIn{0%{opacity:0;transform:scale(.4);filter:brightness(5)}100%{opacity:1;transform:none;filter:none}}
+@media (max-width:560px){.pet-wrap{flex-direction:column;align-items:stretch}.pet-stage{width:min(100%,220px);align-self:center}.pet-pick{grid-template-columns:minmax(0,1fr)}.pet-opt{flex-direction:row;text-align:left;gap:12px}.pet-opt-art{width:72px;flex:none}}
+@media (prefers-reduced-motion:reduce){.pet-body,.pet-eye,.pet-z,.pet-fx,.evo-from,.evo-to{animation:none!important}.evo-from{display:none}.evo-to{opacity:1}}
