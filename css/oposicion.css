@@ -218,3 +218,24 @@ b.pass{color:var(--mint)} b.fail{color:var(--pink)}
 .ent-step.on span:last-child{text-decoration:line-through}
 .ent-step.on .ent-box{background:var(--mint);border-color:var(--mint);color:var(--on-acc)}
 @media (max-width:560px){.ex-cls{grid-template-columns:repeat(2,minmax(0,1fr))}.ex-mode .seg button{font-size:12.5px}}
+
+/* ---------- Cuentas atrás dentro del plan ---------- */
+.plan-cd{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.plan-cd-l{display:inline-flex;align-items:center;gap:6px;font:700 11px var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.plan-cd-l .ico{width:14px;height:14px}
+.plan-cd-i{display:inline-flex;align-items:center;gap:7px;max-width:260px;padding:6px 7px 6px 10px;border:2px solid var(--line);border-radius:999px;background:var(--surface-2);color:var(--ink);font:700 13px var(--f-body);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plan-cd-i i{font:700 11px var(--f-mono);font-style:normal;padding:2px 7px;border-radius:999px;background:var(--pink);color:var(--on-acc)}
+.plan-cd-i.ent i{background:var(--cobalt);color:var(--on-cobalt)}
+.plan-cd-i:hover{border-color:var(--sun)}
+.pday.has-exam{border-color:var(--pink);box-shadow:5px 5px 0 var(--pink)}
+.pday.has-ent{border-color:var(--cobalt)}
+.pday.today.has-exam{box-shadow:5px 5px 0 var(--sun),0 0 0 3px var(--pink)}
+.pday-evs{display:flex;flex-direction:column;gap:6px}
+.pev{display:flex;align-items:center;gap:8px;width:100%;padding:7px 9px;border:2px solid var(--line);border-radius:10px;background:var(--pink);color:var(--on-acc);text-align:left;cursor:pointer;font:inherit;box-shadow:3px 3px 0 #000}
+.pev.ent{background:var(--cobalt);color:var(--on-cobalt)}
+.pev.done{opacity:.6;box-shadow:none}
+.pev-e{font-size:18px;line-height:1;flex:none}
+.pev-t{min-width:0;display:flex;flex-direction:column}
+.pev-t b{font:800 13px/1.2 var(--f-body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pev-t span{font:700 10.5px var(--f-mono);opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pev:hover{transform:translate(-1px,-1px)}

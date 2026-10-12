@@ -45,6 +45,13 @@ function autoHTML(){const ce=typeof curExam==='function'?curExam():null;const sc
   <label for="paScope">Temas<select class="inp" id="paScope">${Object.entries(EXAM_SCOPES).map(([k,l])=>`<option value="${k}" ${k===sc?'selected':''}>${l}</option>`).join('')}</select></label>
   <label for="paMode">Si el día ya tiene bloques<select class="inp" id="paMode"><option value="add">Añadir a lo que hay</option><option value="replace">Sustituir lo pendiente</option></select></label>
  </div><button class="btn pink" type="submit">${ico('shuffle')}Repartir la semana</button></form>`;}
+/* Exámenes y entregas de la cuenta atrás dentro del plan */
+function planEvents(d){if(!Array.isArray(state.exams))return [];return state.exams.filter(e=>e.date===d);}
+function pevHTML(e){const ent=isEnt(e),T=EXAM_TYPES[e.type];
+ const sub=ent?`Entrega · ${e.time||'23:59'}${e.done?' · ✓ entregado':''}`:`${T.l}${e.kind?' · '+esc(e.kind):''}`;
+ return `<button class="pev ${ent?'ent':'exam'}${e.done?' done':''}" data-act="pev-open" data-id="${e.id}"><span class="pev-e" aria-hidden="true">${ent?'📄':'🎯'}</span><span class="pev-t"><b>${esc(examLabel(e))}</b><span>${sub}</span></span></button>`;}
+function planUpcomingHTML(){if(!Array.isArray(state.exams))return '';const L=examsSorted().filter(e=>!examPast(e)).slice(0,5);if(!L.length)return '';
+ return `<div class="plan-cd"><span class="plan-cd-l">${ico('flag')}Cuentas atrás</span>${L.map(e=>`<button class="plan-cd-i${isEnt(e)?' ent':''}" data-act="pev-open" data-id="${e.id}"><span aria-hidden="true">${isEnt(e)?'📄':'🎯'}</span>${esc(examLabel(e))}<i>${tabTxt(e)}</i></button>`).join('')}</div>`;}
 function renderPlan(){
  const el=$('#planArea');if(!el)return;
  const ws=planWeek(),t=today(),cur=weekStart(t),work=state.settings.work;
@@ -52,10 +59,11 @@ function renderPlan(){
  const all=days.flatMap(planOf);const tot=all.reduce((s,x)=>s+x.n,0),done=all.filter(x=>x.done).reduce((s,x)=>s+x.n,0);
  const head=`<div class="card plan-head"><div class="plan-nav"><button class="btn icon" data-act="plan-prev" aria-label="Semana anterior">${ico('play','flip-x')}</button><div class="plan-week"><span class="eyebrow">${ws===cur?'Esta semana':ws<cur?'Semana pasada':'Próxima semana'}</span><b>${fmtShort(ws)} – ${fmtShort(addDays(ws,6))}</b></div><button class="btn icon" data-act="plan-next" aria-label="Semana siguiente">${ico('play')}</button>${ws!==cur?`<button class="btn sm" data-act="plan-today">Hoy</button>`:''}</div>
   <div class="plan-sum"><div class="plan-sum-top"><span><b>${tot}</b> bloques · ${fmtMin(tot*work)}</span><span>${done} hechos</span></div><div class="bar"><i style="width:${tot?done/tot*100:0}%"></i></div></div>
+  ${planUpcomingHTML()}
   <div class="aj-actions plan-tools"><button class="btn sm ${planAutoOpen?'sun':''}" data-act="plan-auto">${ico('shuffle')}Reparto automático</button><button class="btn sm" data-act="plan-copy">${ico('copy')}Copiar semana anterior</button><button class="btn sm ghost" data-act="plan-clear">${ico('trash')}${planClearArmed?'Pulsa otra vez para vaciar':'Vaciar lo pendiente'}</button></div></div>`;
  const grid=`<div class="plan-grid">${days.map((d,i)=>{
-  const items=planOf(d),n=items.reduce((s,x)=>s+x.n,0),past=d<t,isT=d===t;
-  return `<section class="pday ${isT?'today':''} ${past?'past':''}" aria-label="${DOW[i]} ${fmtShort(d)}"><header class="pday-head"><b>${DOW[i]} <span>${pdate(d).getDate()}</span></b>${isT?'<span class="chip now">Hoy</span>':''}<span class="pday-n">${n?`${n} bl. · ${fmtMin(n*work)}`:'Libre'}</span></header>
+  const items=planOf(d),n=items.reduce((s,x)=>s+x.n,0),past=d<t,isT=d===t,evs=planEvents(d);
+  return `<section class="pday ${isT?'today':''} ${past?'past':''} ${evs.some(e=>!isEnt(e))?'has-exam':evs.length?'has-ent':''}" aria-label="${DOW[i]} ${fmtShort(d)}"><header class="pday-head"><b>${DOW[i]} <span>${pdate(d).getDate()}</span></b>${isT?'<span class="chip now">Hoy</span>':''}<span class="pday-n">${n?`${n} bl. · ${fmtMin(n*work)}`:'Libre'}</span></header>${evs.length?`<div class="pday-evs">${evs.map(pevHTML).join('')}</div>`:''}
   <ul class="pday-list">${items.map(it=>{let st='';if(it.done)st=`<span class="pst ok">${ico('check')}Hecho</span>`;else if(past)st='<span class="pst miss">Sin hacer</span>';else if(isT&&it.task&&it.task!=='quitada')st='<span class="pst on">En tareas de hoy</span>';
    return `<li class="pitem sc-${itemScope(it)} ${it.done?'done':''}"><div class="pitem-main"><span class="pitem-act">${ACTS[it.act]||'Estudiar'}</span><span class="pitem-t">${esc(itemName(it))}</span><span class="pitem-meta"><span class="pdots">${'<i></i>'.repeat(Math.min(it.n,12))}</span>${st}</span></div><button class="btn sm icon ghost" data-act="plan-del" data-d="${d}" data-id="${it.id}" aria-label="Quitar bloque">${ico('x')}</button></li>`;}).join('')}</ul>
   ${past?'':planAddDay===d?planFormHTML(d):`<button class="btn sm ghost pday-add" data-act="plan-add" data-d="${d}">${ico('plus')}Añadir bloque</button>`}</section>`;}).join('')}</div>`;
@@ -99,3 +107,6 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act^="pla
   planClearArmed=false;const t=today();let n=0;for(let i=0;i<7;i++){const d=addDays(ws,i);if(d<t)continue;planOf(d).filter(x=>!x.done).map(x=>x.id).forEach(id=>{removePlanItem(d,id);n++;});}
   afterAction();toast(n?`${n} bloques quitados`:'No había bloques pendientes','trash');break;}
  }});
+
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act="pev-open"]');if(!el)return;state.examSel=el.dataset.id;save();setTab('inicio');
+ setTimeout(()=>{const c=$('#examCard');if(c)c.scrollIntoView({behavior:'smooth',block:'start'});},150);});
