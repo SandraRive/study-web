@@ -68,11 +68,38 @@ function wrapPet(inner,p,mood,opts,st,sc){sc=sc||.8;const tr=`translate(${80-80*
 function petFeedFromStudy(min){const p=state.pet;if(!p||!p.species)return;petTick();const before=petStage(p);
  p.xp+=min;p.food=Math.min(100,p.food+Math.round(min*.9));p.joy=Math.min(100,p.joy+Math.round(min*.3));p.snacks=Math.min(9,(p.snacks||0)+1);
  const after=petStage(p);if(after>before)petEvolve(before,after);}
+/* Escena del nacimiento: el huevo tiembla, se agrieta, brilla y se parte en dos */
+function hatchSVG(p){const SP=PET_SPECIES[p.species],c=SP.c,c2=SP.c2,id='h'+uid();
+ const zig='M50 112 L60 102 L70 114 L80 100 L90 114 L100 100 L110 114 L120 100 L130 114 L140 102 L150 112';
+ const egg=`<ellipse cx="100" cy="112" rx="50" ry="62" fill="#FFF7E8" stroke="${OL}" stroke-width="5"/><path d="M58 100 l12 -10 12 10 12 -10 12 10 12 -10 12 10 12 -10 8 6" fill="none" stroke="${c}" stroke-width="6" stroke-linejoin="round"/><circle cx="80" cy="76" r="8" fill="${c2}"/><circle cx="122" cy="138" r="10" fill="${c2}"/><circle cx="116" cy="70" r="5" fill="${c}"/><circle cx="76" cy="146" r="6" fill="${c}"/><path d="M72 64 q6 -10 14 -8" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>`;
+ const rays=Array.from({length:12},(_,k)=>`<path d="M100 110 L${100+Math.cos(k*Math.PI/6-.12)*160} ${110+Math.sin(k*Math.PI/6-.12)*160} L${100+Math.cos(k*Math.PI/6+.12)*160} ${110+Math.sin(k*Math.PI/6+.12)*160}Z" fill="${c2}"/>`).join('');
+ const bits=Array.from({length:8},(_,k)=>`<path class="hb hb${k}" d="M0 -6 L6 2 L-4 6Z" fill="#FFF7E8" stroke="${OL}" stroke-width="2" transform="translate(100 108)"/>`).join('');
+ return `<svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" class="hatch" aria-label="Nacimiento">
+ <defs><clipPath id="${id}t"><path d="M0 0 H200 V112 L150 112 L140 102 L130 114 L120 100 L110 114 L100 100 L90 114 L80 100 L70 114 L60 102 L50 112 L0 112Z"/></clipPath>
+ <clipPath id="${id}b"><path d="${zig} L200 112 V220 H0 V112 L50 112Z"/></clipPath>
+ <radialGradient id="${id}g"><stop offset="0" stop-color="#fff"/><stop offset=".4" stop-color="${c2}" stop-opacity=".8"/><stop offset="1" stop-color="${c2}" stop-opacity="0"/></radialGradient></defs>
+ <g class="h-rays">${rays}</g><circle class="h-glow" cx="100" cy="110" r="95" fill="url(#${id}g)"/>
+ <g class="h-pet">${petSVG(p,'happy').replace(/^<svg[^>]*>/,'<svg x="20" y="22" width="160" height="160" viewBox="0 0 160 160">')}</g>
+ <g class="h-egg"><g class="h-bot" clip-path="url(#${id}b)">${egg}</g><g class="h-top" clip-path="url(#${id}t)">${egg}</g>
+  <path class="h-crack c1" d="M100 100 L92 84 L100 74 L94 60" fill="none" stroke="${OL}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="h-crack c2" d="M80 100 L70 90 L74 78 M120 100 L130 92 L126 80 L134 72" fill="none" stroke="${OL}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="h-crack c3" d="${zig}" fill="none" stroke="${OL}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>
+ ${bits}</svg>`;}
 function petEvolve(from,to){const p=state.pet;p.food=Math.max(p.food,80);p.joy=Math.max(p.joy,80);
- setTimeout(()=>{const m=$('#petModal');if(!m)return;const SP=PET_SPECIES[p.species];
-  $('#petModalBody').innerHTML=`<div class="eyebrow">${to===1?'¡Ha nacido!':'¡Evolución!'}</div><div class="pet-evo">${petSVG(Object.assign({},p,{xp:PET_STAGES[from].min}),'happy',{cls:'evo-from'})}${petSVG(p,'happy',{cls:'evo-to'})}</div>
-  <h2 class="pet-evo-t">${to===1?`¡${esc(p.name||SP.n)} ha salido del huevo!`:`¡${esc(p.name||SP.n)} ahora es ${PET_STAGES[to].n.toLowerCase()}!`}</h2><p class="hint">${to===1?'Cuídala estudiando: cada pomodoro la alimenta y la hace crecer.':to===4?'Ha alcanzado su forma legendaria. Pocas mascotas llegan hasta aquí.':`Siguiente forma a las ${Math.round(PET_STAGES[to+1].min/60)} horas de foco.`}</p><button class="btn pink" data-act="pet-close">¡Genial!</button>`;
-  m.hidden=false;confetti(140);},900);}
+ setTimeout(()=>{const m=$('#petModal');if(!m)return;const SP=PET_SPECIES[p.species],nm=esc(p.name||SP.n);
+  if(to===1){
+   $('#petModalBody').innerHTML=`<div class="eyebrow hatch-ey">¡Algo se mueve…!</div><div class="hatch-wrap" data-act="pet-tap">${hatchSVG(p)}</div>
+   <div class="hatch-txt"><h2 class="pet-evo-t">¡${nm} ha nacido! 🎉</h2><p class="hint">Cuídala estudiando: cada pomodoro la alimenta y la hace crecer. Su siguiente forma llega a las 10 horas de foco.</p><button class="btn pink" data-act="pet-close">¡Bienvenida, ${nm}!</button></div>`;
+   m.hidden=false;m.classList.add('hatching');
+   const ey=m.querySelector('.hatch-ey');
+   setTimeout(()=>{if(ey)ey.textContent='¡Se está agrietando!';},1500);
+   setTimeout(()=>{if(ey)ey.textContent='¡Ya sale, ya sale!';},2900);
+   setTimeout(()=>{if(ey)ey.textContent='¡Ha nacido!';confetti(180);if(navigator.vibrate)navigator.vibrate([60,40,120]);},3700);
+   setTimeout(()=>{confetti(90);},4300);
+   return;}
+  $('#petModalBody').innerHTML=`<div class="eyebrow">¡Evolución!</div><div class="pet-evo">${petSVG(Object.assign({},p,{xp:PET_STAGES[from].min}),'happy',{cls:'evo-from'})}${petSVG(p,'happy',{cls:'evo-to'})}</div>
+  <h2 class="pet-evo-t">¡${nm} ahora es ${PET_STAGES[to].n.toLowerCase()}!</h2><p class="hint">${to===4?'Ha alcanzado su forma legendaria. Pocas mascotas llegan hasta aquí.':`Siguiente forma a las ${Math.round(PET_STAGES[to+1].min/60)} horas de foco.`}</p><button class="btn pink" data-act="pet-close">¡Genial!</button>`;
+  m.hidden=false;m.classList.remove('hatching');setTimeout(()=>confetti(140),2200);},900);}
 function petAction(kind){const p=state.pet;if(!p||!p.species)return;petTick();if(petStage(p)===0){toast('Primero tiene que nacer: completa un pomodoro.','timer');return;}
  if(kind==='snack'){if(!(p.snacks>0)){toast('No te quedan snacks. Cada pomodoro te da uno.','timer');return;}p.snacks--;p.food=Math.min(100,p.food+25);p.joy=Math.min(100,p.joy+5);petFx('🍪');}
  else{const t=today();if(p.petDay!==t){p.petDay=t;p.pets=0;}if(p.pets>=6){petFx('💤');toast('Ya le has dado muchos mimos hoy. ¡Ahora toca estudiar!','sparkle');return;}p.pets++;p.joy=Math.min(100,p.joy+6);petFx('💖');}
@@ -103,6 +130,7 @@ function renderPetMini(){const el=$('#petMini');if(!el)return;const p=state.pet;
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act^="pet-"]');if(!el||el.disabled)return;const a=el.dataset.act;
  if(a==='pet-adopt'){const s=el.dataset.s;state.pet={species:s,name:PET_SPECIES[s].n,born:Date.now(),xp:0,food:80,joy:80,last:Date.now(),snacks:0};save();renderPet();toast(`<b>¡Has adoptado a ${PET_SPECIES[s].n}!</b> Completa un pomodoro para que nazca.`,'sparkle','ach');}
  else if(a==='pet-pet')petAction('pet');else if(a==='pet-snack')petAction('snack');
- else if(a==='pet-close')$('#petModal').hidden=true;
+ else if(a==='pet-close'){$('#petModal').hidden=true;$('#petModal').classList.remove('hatching');}
+ else if(a==='pet-tap'){const w=el.querySelector('.hatch');if(w){w.classList.remove('tap');void w.getBoundingClientRect();w.classList.add('tap');}}
  else if(a==='pet-rename'){const n=prompt('¿Cómo quieres llamarla?',state.pet.name||'');if(n&&n.trim()){state.pet.name=n.trim().slice(0,18);save();renderPet();}}});
 setInterval(()=>{if(state.pet&&state.pet.species&&state.ui.tab==='inicio'&&!document.hidden){petTick();renderPet();}},60000);
