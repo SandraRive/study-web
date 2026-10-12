@@ -1,7 +1,7 @@
 /* Service worker de Misión Estudio: guarda la web en el dispositivo para que funcione sin conexión.
    Con conexión siempre carga la última versión; sin conexión usa la copia guardada.
    Si añades o quitas archivos, actualiza la lista APP y sube VERSION. */
-const VERSION='2026-10-13.6';
+const VERSION='2026-10-13.7';
 const CACHE='mision-estudio-'+VERSION;
 const FONTS='mision-estudio-fuentes';
 const APP=[
@@ -23,6 +23,7 @@ const APP=[
   'css/fisicas.css',
   'css/informe.css',
   'css/diaadia.css',
+  'css/temporada.css',
   'css/progreso.css',
   'css/responsive.css',
   'css/sonidos.css',
@@ -53,6 +54,8 @@ const APP=[
   'js/features/calendario.js',
   'js/features/sincro.js',
   'js/features/cuidado.js',
+  'js/features/temporada.js',
+  'js/data/cuerpo.js',
   'js/vendor/qrcode.min.js',
   'js/vendor/jsqr.min.js',
   'js/features/habitos.js',

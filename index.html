@@ -37,6 +37,7 @@
 <link rel="stylesheet" href="css/fisicas.css">
 <link rel="stylesheet" href="css/informe.css">
 <link rel="stylesheet" href="css/diaadia.css">
+<link rel="stylesheet" href="css/temporada.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -84,6 +85,7 @@
     <button class="chest-banner" id="chestBanner" data-act="chest-open" hidden></button>
     <button class="repair-banner" id="repairBanner" data-act="repair-open" hidden></button>
     <button class="repair-banner report-banner" id="reportBanner" hidden></button>
+    <article class="card season-card" id="seasonCard"></article>
     <article class="card exam-card" id="examCard"></article>
     <article class="card boss-card" id="bossCard"></article>
     <article class="card care-card" id="careCard"></article>
@@ -182,6 +184,11 @@
   <section class="view" id="v-fisicas" aria-label="Pruebas físicas" hidden>
     <div class="sec-head"><h2 class="h2">Pruebas físicas</h2><p class="lead">Apunta tus marcas de entrenamiento y mira cómo te acercas al mínimo de cada prueba. Cada récord suma XP y le quita vida al jefe.</p></div>
     <div id="pfArea"></div>
+  </section>
+
+  <section class="view" id="v-pase" aria-label="Pase de temporada" hidden>
+    <div class="sec-head"><button class="btn sm ghost" data-act="tab" data-tab="inicio">← Inicio</button></div>
+    <div id="paseArea" class="pase-area"></div>
   </section>
 
   <section class="view" id="v-plan" aria-label="Plan semanal" hidden>
@@ -305,6 +312,7 @@
     <div class="sec-head"><h2 class="h2">Tu avatar</h2><p class="lead">Subir de nivel y conseguir logros desbloquea objetos. Con las monedas que ganas estudiando puedes comprar los de la tienda.</p></div>
     <div class="av-layout">
       <article class="card av-stage">
+        <div class="seg av-view" id="avViewTog" role="group" aria-label="Vista del avatar"></div>
         <div class="av-big" id="avStage"></div>
         <div class="name" id="avName"></div>
         <div class="sub" id="avSub"></div>
@@ -420,6 +428,7 @@
 <script src="js/core/utilidades.js"></script>
 <script src="js/data/habitos.js"></script>
 <script src="js/data/avatares.js"></script>
+<script src="js/data/cuerpo.js"></script>
 <script src="js/data/niveles.js"></script>
 <script src="js/core/estado.js"></script>
 <script src="js/core/recompensas.js"></script>
@@ -443,6 +452,7 @@
 <script src="js/features/calendario.js"></script>
 <script src="js/features/sincro.js"></script>
 <script src="js/features/cuidado.js"></script>
+<script src="js/features/temporada.js"></script>
 <script src="js/features/simulacro.js"></script>
 <script src="js/features/plan.js"></script>
 <script src="js/features/jefe.js"></script>
