@@ -136,3 +136,54 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 @keyframes bpDmg{0%{opacity:0;transform:translate(-50%,20px) scale(.6)}15%{opacity:1;transform:translate(-50%,-6px) scale(1.15)}70%{opacity:1;transform:translate(-50%,-24px) scale(1)}100%{opacity:0;transform:translate(-50%,-50px)}}
 @keyframes bpFall{0%{transform:none;filter:brightness(2)}40%{transform:rotate(-6deg)}100%{transform:translateY(12px) rotate(8deg) scale(.92);filter:grayscale(.85) brightness(.75)}}
 @media (prefers-reduced-motion:reduce){.boss-pop,.bp-card,.bp-art svg,.bp-dmg,.bp-win{animation:none!important}.bp-bar i{transition:none!important}}
+
+/* ---------- Revancha ---------- */
+.chip.revenge{background:linear-gradient(90deg,#FF2E4D,#FF8A3D);color:#fff;border-color:#000}
+.boss-card.revenge{background:radial-gradient(circle at 15% 50%,rgba(255,46,77,.35),transparent 50%),var(--surface);box-shadow:5px 5px 0 #FF2E4D}
+.boss-card.revenge .boss-art svg{filter:drop-shadow(0 0 14px rgba(255,46,77,.7))}
+
+/* ---------- Mientras no estabas / reparar racha ---------- */
+.back-card{max-width:460px;text-align:left;align-items:stretch}
+.back-title{font:900 28px var(--f-display);letter-spacing:-.02em;text-align:center}
+.back-card>.eyebrow{text-align:center}
+.back-item{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:14px;border:3px solid var(--line);border-radius:14px;background:var(--surface-2)}
+.back-ico{width:56px;height:56px;border-radius:16px;border:3px solid var(--line);display:grid;place-items:center;background:#3A3F55;color:#8C93A8}
+.back-ico .ico{width:30px;height:30px}
+.back-boss{width:72px;display:block}
+.back-boss svg{width:100%;display:block;filter:drop-shadow(0 0 10px rgba(255,46,77,.5))}
+.back-txt{display:flex;flex-direction:column;gap:6px;min-width:0}
+.back-txt p{font-weight:600;font-size:15px}
+.back-repair{display:flex;flex-direction:column;gap:8px;align-items:flex-start;margin-top:4px;padding-top:8px;border-top:2px dashed var(--track);font-size:14px}
+.back-card>.btn{align-self:center;margin-top:4px}
+.repair-banner{margin-top:22px;width:100%;display:flex;align-items:center;gap:14px;padding:12px 16px;border:3px solid var(--line);border-radius:var(--r);background:linear-gradient(90deg,#3A1408,#5E1E0C 60%,#3A1408);color:#FFE9DE;box-shadow:5px 5px 0 var(--orange);cursor:pointer;text-align:left}
+.repair-banner:hover{transform:translate(-2px,-2px)}
+.rp-ico{width:46px;height:46px;flex:none;border-radius:14px;border:3px solid var(--line);display:grid;place-items:center;background:var(--orange);color:var(--on-acc);animation:bob 1.8s ease-in-out infinite}
+.rp-ico .ico{width:26px;height:26px}
+.rp-txt{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.rp-txt b{font:900 16px var(--f-display)}
+.rp-txt span{font-size:13.5px;opacity:.85}
+.rp-cta{flex:none;pointer-events:none}
+@media (max-width:560px){.repair-banner{flex-wrap:wrap}.rp-cta{width:100%}}
+
+/* ---------- Galería de jefes ---------- */
+.boss-gallery{margin-bottom:34px}
+.bg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.bg-tile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 10px;border:3px solid var(--line);border-radius:14px;background:var(--surface-2);text-align:center;min-width:0}
+.bg-tile b{font:800 12.5px/1.2 var(--f-display);text-wrap:balance}
+.bg-art{width:76px;display:block}
+.bg-art svg{width:100%;display:block}
+.bg-tile.unknown .bg-art svg{filter:brightness(0) opacity(.45)}
+.bg-tile.unknown b{color:var(--muted)}
+.bg-unknown{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px}
+.bg-sil{display:block;padding:4px;border:2px solid var(--line);border-radius:10px;background:var(--surface-2)}
+.bg-sil svg{width:100%;display:block;filter:brightness(0) opacity(.4)}
+.bg-sil.final{border-color:var(--sun);box-shadow:0 0 0 2px rgba(255,200,60,.15)}
+.bg-tile.won{box-shadow:4px 4px 0 var(--mint)}
+.bg-chips{display:flex;flex-wrap:wrap;gap:4px;justify-content:center}
+.bg-sub{font:800 15px var(--f-display);margin:20px 0 10px}
+.bg-hist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.bg-hist li{display:grid;grid-template-columns:60px 36px minmax(0,1fr) auto;gap:10px;align-items:center;padding:6px 10px;border:2px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:14px}
+.bg-week{font:700 12px var(--f-mono)}
+.bg-mini{width:36px;display:block}.bg-mini svg{width:100%;display:block}
+.bg-hname{font-weight:700;overflow-wrap:anywhere}
+@media (max-width:560px){.bg-hist li{grid-template-columns:36px minmax(0,1fr);}.bg-week{display:none}.bg-hist li .chip{grid-column:2;justify-self:start}}
