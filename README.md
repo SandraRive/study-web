@@ -6,9 +6,10 @@ Está hecha con HTML, CSS y JavaScript, sin frameworks, sin dependencias y sin p
 
 ## Qué incluye
 
-- **Inicio**: avatar, nivel y XP, racha, retos diarios, metas semanales y técnica del día.
+- **Inicio**: avatar, nivel y XP, racha, **cuenta atrás al examen** con el ritmo necesario, retos diarios, metas semanales y técnica del día.
 - **Foco**: temporizador pomodoro configurable, modo a pantalla completa y lista de tareas diarias.
-- **Temario**: mapa de temas con vueltas y dominio por colores, repaso espaciado automático a 1, 3, 7 y 30 días, flashcards con sistema de cajas y cuaderno de errores.
+- **Plan**: planificador semanal por días, con reparto automático de temas. Lo de hoy pasa solo a las tareas.
+- **Temario**: mapa de temas con vueltas y dominio por colores, repaso espaciado automático a 1, 3, 7 y 30 días, flashcards con sistema de cajas, **simulacro tipo test** (cronómetro, penalización por fallo y banco de preguntas) y cuaderno de errores.
 - **Sonidos**: lofi, lluvia, chimenea, olas y ruido blanco, rosa y marrón, todo generado en el navegador con Web Audio.
 - **Hábitos**: técnicas de estudio por ámbito y apartado.
 - **Avatar**: 26 personajes y decenas de objetos desbloqueables por nivel, por logros o en la tienda con monedas.
@@ -42,6 +43,7 @@ study-web/
 │   ├── habitos.css
 │   ├── avatar.css
 │   ├── progreso.css
+│   ├── oposicion.css       Cuenta atrás, simulacro y plan semanal
 │   ├── modo-foco.css       Temporizador a pantalla completa
 │   ├── avisos.css          Notificaciones y ventana de nivel
 │   ├── ajustes.css         Instalación, avisos y copia de seguridad
@@ -69,6 +71,9 @@ study-web/
     │   ├── habitos.js
     │   ├── avatar.js
     │   ├── progreso.js
+    │   ├── examen.js       Cuenta atrás al examen
+    │   ├── simulacro.js    Simulacro tipo test y banco de preguntas
+    │   ├── plan.js         Plan semanal
     │   └── ajustes.js      Ajustes y copia de seguridad
     └── main.js             Eventos y arranque
 ```

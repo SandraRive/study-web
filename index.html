@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="css/progreso.css">
 <link rel="stylesheet" href="css/modo-foco.css">
 <link rel="stylesheet" href="css/avisos.css">
+<link rel="stylesheet" href="css/oposicion.css">
 <link rel="stylesheet" href="css/ajustes.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
@@ -75,6 +76,7 @@
       </article>
       <div class="stats" id="stats"></div>
     </div>
+    <article class="card exam-card" id="examCard"></article>
     <div class="home-grid">
       <article class="card">
         <div class="card-head"><h2 class="card-title" id="chTitle"></h2><span class="chip">+40 XP cada uno</span></div>
@@ -165,6 +167,12 @@
     </div>
   </section>
 
+  <!-- PLAN -->
+  <section class="view" id="v-plan" aria-label="Plan semanal" hidden>
+    <div class="sec-head"><h2 class="h2">Plan semanal</h2><p class="lead">Reparte tus temas y bloques de estudio por días. Lo que planifiques para hoy aparece solo en tus tareas.</p></div>
+    <div id="planArea"></div>
+  </section>
+
   <!-- TEMARIO -->
   <section class="view" id="v-temario" aria-label="Temario" hidden>
     <div class="sec-head"><h2 class="h2">Temario</h2><p class="lead">Tu mapa de temas, tus tarjetas de memoria y tu cuaderno de errores. Al cerrar la vuelta de un tema, sus repasos se programan solos y aparecen en tus tareas el día que tocan.</p></div>
@@ -211,6 +219,10 @@
           <ul class="c-list" id="fcList"></ul>
         </article>
       </div>
+    </div>
+
+    <div class="tem-view" id="tem-simulacro" hidden>
+      <div id="simArea"></div>
     </div>
 
     <div class="tem-view" id="tem-errores" hidden>
@@ -381,6 +393,9 @@
 <script src="js/features/habitos.js"></script>
 <script src="js/features/avatar.js"></script>
 <script src="js/features/progreso.js"></script>
+<script src="js/features/examen.js"></script>
+<script src="js/features/simulacro.js"></script>
+<script src="js/features/plan.js"></script>
 <script src="js/features/ajustes.js"></script>
 <script src="js/main.js"></script>
 </body>

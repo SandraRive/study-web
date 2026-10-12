@@ -94,6 +94,7 @@ $('#marquee').innerHTML=words.map(w=>`<span>${w}</span>${ico('star')}`).join('')
 initSettings();initSounds();
 (function restore(){const t=state.timer;if(t.running&&t.endAt&&Date.now()>=t.endAt){completeTimer(true);}else if(!t.running&&(t.remaining==null||t.remaining>durOf(t.mode)))t.remaining=durOf(t.mode);})();
 if(state.timer.running)armEnd();
+syncPlan();
 let start=state.ui.tab;const h=(location.hash||'').slice(1);if(TABS.some(x=>x[0]===h))start=h;
 checkChallenges();checkGoals();checkAch();pendingLevel=null;save();
 renderHud();setTab(start,true);

@@ -8,11 +8,11 @@ function distBar(list){if(!list.length)return '<div class="dist"></div>';const c
 function nextRev(tp){return tp.reviews.filter(r=>!r.done&&!r.skip).sort((a,b)=>a.due<b.due?-1:1)[0]||null;}
 function revLabel(r){const t=today();if(r.due<t)return 'Repaso atrasado';if(r.due===t)return 'Repaso hoy';const d=daysBetween(t,r.due);return d===1?'Repaso mañana':`Repaso en ${d} días`;}
 function renderTemario(){
- const tabs=[['temas','Mapa de temas','map'],['cartas','Flashcards','cards'],['errores','Cuaderno de errores','alert']];
+ const tabs=[['temas','Mapa de temas','map'],['cartas','Flashcards','cards'],['simulacro','Simulacro','clipboard'],['errores','Cuaderno de errores','alert']];
  const t=today();const dueC=state.cards.filter(c=>c.due<=t).length;const pendE=state.errors.filter(e=>!e.fixed).length;
- $('#temTabs').innerHTML=tabs.map(([id,l,i])=>`<button class="pill cnt" data-act="tem-tab" data-id="${id}" aria-pressed="${state.ui.tem===id}">${ico(i)}${l}${id==='cartas'?`<span class="pill-count">${dueC}</span>`:id==='errores'?`<span class="pill-count">${pendE}</span>`:`<span class="pill-count">${state.topics.length}</span>`}</button>`).join('');
+ $('#temTabs').innerHTML=tabs.map(([id,l,i])=>`<button class="pill cnt" data-act="tem-tab" data-id="${id}" aria-pressed="${state.ui.tem===id}">${ico(i)}${l}${id==='simulacro'?`<span class="pill-count">${state.questions.length}</span>`:id==='cartas'?`<span class="pill-count">${dueC}</span>`:id==='errores'?`<span class="pill-count">${pendE}</span>`:`<span class="pill-count">${state.topics.length}</span>`}</button>`).join('');
  $$('.tem-view').forEach(v=>v.hidden=v.id!=='tem-'+state.ui.tem);
- if(state.ui.tem==='temas')renderTemas();else if(state.ui.tem==='cartas')renderCardsView();else renderErrors();
+ if(state.ui.tem==='temas')renderTemas();else if(state.ui.tem==='cartas')renderCardsView();else if(state.ui.tem==='simulacro')renderSim();else renderErrors();
 }
 function renderTemas(){
  const t=today();const tps=state.topics;
@@ -44,7 +44,7 @@ function detailHTML(){const tp=state.topics.find(x=>x.id===state.ui.tpSel);
  <div class="td-sec"><button class="btn pink" data-act="tp-close">${ico('repeat')}Cerrar vuelta y programar repasos</button><span class="hint">Suma una vuelta y programa repasos a 1, 3, 7 y 30 días. Aparecen solos en tus tareas el día que tocan. +20 XP y 10 monedas.</span>${revs}</div>
  <div class="td-sec"><div class="td-line"><span>${ico('cards')} ${cards.length} tarjetas · ${due} para hoy</span><button class="btn sm" data-act="tp-cards">Estudiar</button></div><div class="td-line"><span>${ico('alert')} ${errs} errores pendientes</span><button class="btn sm" data-act="tp-errs">Ver</button></div></div>
  <div class="td-sec" style="align-items:flex-start"><button class="btn sm ghost" data-act="tp-del">${ico('trash')}${pendingDel===tp.id?'Pulsa otra vez para borrar':'Borrar tema'}</button></div></div>`;}
-function closeRound(tp){const t=today();tp.vuelta=Math.min(30,tp.vuelta+1);tp.last=t;
+function closeRound(tp){const t=today();{const L=logDay();L.closes=(L.closes||0)+1;}tp.vuelta=Math.min(30,tp.vuelta+1);tp.last=t;
  state.tasks=state.tasks.filter(x=>!(x.rev&&x.rev.tp===tp.id&&!x.done));
  tp.reviews=[1,3,7,30].map(n=>({n,due:addDays(t,n),done:false,skip:false,task:null}));state.counts.closes++;
  grantXP(20,`Vuelta ${tp.vuelta} cerrada`,10);toast(`Repasos programados: ${tp.reviews.map(r=>fmtShort(r.due)).join(', ')}`,'calendar');afterAction();}
