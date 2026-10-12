@@ -28,3 +28,8 @@
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* Pantallas táctiles: los campos de texto a 16 px como mínimo para que el iPhone no haga zoom al escribir */
+@media (pointer:coarse){
+  .inp,.set-grid .inp,.task-edit-inp,.goal-set input,.td-mat,#expText,#impText{font-size:16px!important}
+}

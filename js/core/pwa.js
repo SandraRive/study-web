@@ -28,6 +28,16 @@ if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){
  })();
 }
 
+/* ---- iPhone: al cerrar el teclado, devuelve la pantalla a su sitio ---- */
+(function keyboardFix(){
+ const typing=()=>{const a=document.activeElement;return !!a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName);};
+ const reset=()=>{if(typing())return;if(window.scrollY||document.documentElement.scrollTop||document.body.scrollTop){window.scrollTo(0,0);document.documentElement.scrollTop=0;document.body.scrollTop=0;}};
+ document.addEventListener('focusout',()=>{setTimeout(reset,80);setTimeout(reset,400);});
+ const vv=window.visualViewport;
+ if(vv)vv.addEventListener('resize',()=>{if(vv.height>window.innerHeight*0.85)setTimeout(reset,80);});
+ window.addEventListener('scroll',()=>{if(!typing())reset();},{passive:true});
+})();
+
 /* ---- Avisos ---- */
 const notifSupported=()=>typeof window.Notification==='function';
 function notifStatus(){if(!notifSupported())return 'unsupported';if(Notification.permission==='denied')return 'denied';if(Notification.permission==='granted'&&state.settings.notify)return 'on';return 'off';}

@@ -1,7 +1,7 @@
 /* Service worker de Misión Estudio: guarda la web en el dispositivo para que funcione sin conexión.
    Con conexión siempre carga la última versión; sin conexión usa la copia guardada.
    Si añades o quitas archivos, actualiza la lista APP y sube VERSION. */
-const VERSION='2026-10-12.2';
+const VERSION='2026-10-12.3';
 const CACHE='mision-estudio-'+VERSION;
 const FONTS='mision-estudio-fuentes';
 const APP=[
