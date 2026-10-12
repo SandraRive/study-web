@@ -7,7 +7,7 @@ const DEFAULT={name:'',xp:0,coins:0,coinsEarned:0,owned:{},avatar:{base:'gato',c
  pomo:{total:0,minutes:0},tipsDone:{},tipsXp:{},ach:{},streak:{last:null,count:0},
  day:{date:null,pomos:0,tasks:0,tips:0,minutes:0,claimed:{},allDone:false},
  counts:{tasksDone:0,challengesDays:0,closes:0,cardsOk:0,errorsFixed:0,goalsDone:0,bossWins:0,revengeWins:0,repairs:0},
- topics:[],cards:[],errors:[],questions:[],tests:[],simRun:null,simLast:null,simCfg:{src:'all',tp:'all',n:20,min:20,pen:3},plan:{},exam:{name:'',date:'',vueltas:3,scope:'opo'},exams:null,examSel:null,dist:[],diary:{},boss:null,bossHist:[],revenge:[],bossEscaped:null,lostStreak:null,bestStreak:0,freezes:0,frozen:[],themes:{espacio:true},bgTheme:'espacio',chest:{date:null,streak:0,opened:0},log:{},goals:{pomos:20,minutes:600,tasks:15,cards:100,days:5},goalsClaimed:{},
+ topics:[],cards:[],errors:[],questions:[],tests:[],simRun:null,simLast:null,simCfg:{src:'all',tp:'all',n:20,min:20,pen:3},plan:{},exam:{name:'',date:'',vueltas:3,scope:'opo'},exams:null,examSel:null,dist:[],diary:{},phys:{tests:[],daily:null},boss:null,bossHist:[],revenge:[],bossEscaped:null,lostStreak:null,bestStreak:0,freezes:0,frozen:[],themes:{espacio:true},bgTheme:'espacio',chest:{date:null,streak:0,opened:0},log:{},goals:{pomos:20,minutes:600,tasks:15,cards:100,days:5},goalsClaimed:{},
  settings:{work:25,short:5,long:15,every:4,auto:false,chime:true,notify:false},lastBackup:null,
  timer:{mode:'work',remaining:1500,endAt:null,running:false,cycle:0,taskId:null},
  ui:{tab:'inicio',amb:'base',sub:0,filter:'all',cat:'base',baseSet:'clasicos',tem:'temas',temScope:'all',tpSel:null,fcTopic:'all',erFilter:'pend',erReason:'all',erTp:'all',simView:'setup',qTp:'all',qTopicSel:'',planWeek:null},
