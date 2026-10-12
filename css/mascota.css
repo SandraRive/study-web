@@ -33,10 +33,10 @@
 .pet-opt b{font:900 17px var(--f-display)}
 .pet-opt>span:last-child{font-size:13px;color:var(--muted)}
 /* En Foco */
-.pet-mini{display:flex;align-items:center;gap:8px;font:700 12px var(--f-mono);color:var(--muted)}
+.pet-mini{display:flex;flex-direction:column;align-items:center;gap:2px;font:700 12px var(--f-mono);color:var(--muted);text-align:center}
 .pet-mini svg{width:54px;height:54px}
 .pet-mini svg.studying .pet-body{animation:petNod 1.6s ease-in-out infinite}
-.pomo .pet-mini{justify-content:center;color:inherit;opacity:.9}
+.pomo .pet-mini{align-self:center;color:inherit;opacity:.9}
 /* Evolución */
 .pet-modal{z-index:92}
 .pet-mcard{max-width:420px}
