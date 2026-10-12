@@ -31,11 +31,12 @@
 <link rel="stylesheet" href="css/modo-foco.css">
 <link rel="stylesheet" href="css/avisos.css">
 <link rel="stylesheet" href="css/oposicion.css">
+<link rel="stylesheet" href="css/enganche.css">
 <link rel="stylesheet" href="css/ajustes.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-<div class="space" aria-hidden="true"><canvas class="stars-cv"></canvas><div class="planet"></div><div class="moon"></div></div>
+<div class="space" aria-hidden="true"><canvas class="stars-cv"></canvas><div class="planet"></div><div class="moon"></div><div class="deco"></div></div>
 <header class="top">
   <div class="top-in">
     <div class="brand">
@@ -76,7 +77,9 @@
       </article>
       <div class="stats" id="stats"></div>
     </div>
+    <button class="chest-banner" id="chestBanner" data-act="chest-open" hidden></button>
     <article class="card exam-card" id="examCard"></article>
+    <article class="card boss-card" id="bossCard"></article>
     <div class="home-grid">
       <article class="card">
         <div class="card-head"><h2 class="card-title" id="chTitle"></h2><span class="chip">+40 XP cada uno</span></div>
@@ -298,6 +301,7 @@
       <article class="card">
         <div class="cat-tabs" id="catTabs"></div>
         <div class="cat-tabs set-tabs" id="setTabs" hidden></div>
+        <div id="shopExtras" hidden></div>
         <div class="item-grid" id="itemGrid"></div>
       </article>
     </div>
@@ -345,7 +349,7 @@
 </div>
 
 <div class="zen" id="zen" hidden data-mode="work" role="dialog" aria-label="Modo foco a pantalla completa">
-  <div class="space" aria-hidden="true"><canvas class="stars-cv"></canvas><div class="planet"></div><div class="moon"></div></div>
+  <div class="space" aria-hidden="true"><canvas class="stars-cv"></canvas><div class="planet"></div><div class="moon"></div><div class="deco"></div></div>
   <button class="btn sm zen-exit" data-act="zen-exit" id="zenExit"></button>
   <div class="zen-in">
     <div class="zen-mode" id="zMode">Bloque de foco</div>
@@ -361,6 +365,9 @@
   </div>
 </div>
 
+<div class="modal" id="chestModal" hidden>
+  <div class="card modal-card chest-card" role="dialog" aria-modal="true" aria-label="Cofre diario"><div id="chestBody"></div></div>
+</div>
 <div id="toasts" aria-live="polite"></div>
 <div class="modal" id="modal" hidden>
   <div class="card modal-card" role="dialog" aria-modal="true" aria-labelledby="mHead">
@@ -396,6 +403,9 @@
 <script src="js/features/examen.js"></script>
 <script src="js/features/simulacro.js"></script>
 <script src="js/features/plan.js"></script>
+<script src="js/features/jefe.js"></script>
+<script src="js/features/cofre.js"></script>
+<script src="js/features/tienda.js"></script>
 <script src="js/features/ajustes.js"></script>
 <script src="js/main.js"></script>
 </body>

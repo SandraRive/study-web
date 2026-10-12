@@ -52,7 +52,7 @@ function finishSim(timeout){
  logDay().tests=(logDay().tests||0)+1;bumpStreak();
  const xp=ok*2+(score>=5?20:0)+(score>=8?20:0),coins=ok+(score>=8?15:0);
  if(timeout)toast('<b>¡Tiempo!</b> El simulacro se ha entregado solo.','timer');
- if(xp)grantXP(xp,`Simulacro: ${fmtScore(score)}`,coins);
+ if(xp)grantXP(xp,`Simulacro: ${fmtScore(score)}`,coins);if(ok)bossHit(ok*5,'Simulacro');
  if(score>=5)confetti(score>=8?140:70);
  afterAction();scrollSimTop();}
 

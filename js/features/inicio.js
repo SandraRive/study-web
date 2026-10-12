@@ -10,7 +10,7 @@ function renderHome(){
  $('#hXpFill').style.width=(L.into/L.need*100)+'%';$('#hXpBar').setAttribute('aria-valuenow',Math.round(L.into/L.need*100));
  $('#hXpTxt').textContent=`${L.into} / ${L.need} XP para el nivel ${L.level+1} · ${state.xp} XP en total`;
  const done=state.tasks.filter(t=>t.done).length;
- const st=[['Racha','flame',streakNow(),streakNow()===1?'día':'días','orange'],['Pomodoros hoy','timer',state.day.pomos,'','pink'],['Foco hoy','target',state.day.minutes,'min','mint'],['Tareas','check',done,'/ '+state.tasks.length,'cobalt']];
+ const st=[['Racha','flame',streakNow(),(streakNow()===1?'día':'días')+(state.freezes?` · ${ico('shield')}${state.freezes}`:''),'orange'],['Pomodoros hoy','timer',state.day.pomos,'','pink'],['Foco hoy','target',state.day.minutes,'min','mint'],['Tareas','check',done,'/ '+state.tasks.length,'cobalt']];
  $('#stats').innerHTML=st.map(([l,i,v,u,c])=>`<div class="stat" style="${cvar(c)}"><div class="stat-top">${l}${ico(i)}</div><div class="stat-num">${v}<small>${u}</small></div></div>`).join('');
  const cs=challenges();const got=cs.filter((c,i)=>state.day.claimed[i]).length;
  $('#chTitle').innerHTML=`${ico('target')}Retos de hoy · ${got}/3`;
@@ -24,5 +24,5 @@ function renderHome(){
  const locked=[];for(const [cat] of CATS)for(const it of ITEMS[cat]){if(isUnlocked(it))continue;let c,t;if(it.u.lvl){c=state.xp;t=xpForLevel(it.u.lvl);}else if(it.u.coins){c=state.coins;t=it.u.coins;}else{[c,t]=ACH.find(a=>a.id===it.u.ach).p(state);}locked.push({it,cat,ratio:Math.max(0,Math.min(c/t,0.999))});}
  locked.sort((a,b)=>b.ratio-a.ratio);
  $('#unlList').innerHTML=locked.length?locked.slice(0,4).map(x=>{const cfg=Object.assign({},state.avatar,{[x.cat]:x.it.id});return `<div class="unl"><span class="unl-th">${avatarSVG(cfg)}</span><div style="min-width:0"><div class="unl-name">${esc(x.it.name)}</div><div class="unl-req"><span>${esc(reqText(x.it.u))}</span><span>${Math.round(x.ratio*100)}%</span></div><div class="bar"><i style="width:${x.ratio*100}%"></i></div></div></div>`;}).join(''):'<div class="empty"><strong>Colección completa</strong>Has desbloqueado todos los objetos.</div>';
- renderExam();
+ renderExam();renderBoss();renderChest();
 }

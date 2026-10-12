@@ -6,13 +6,13 @@ Está hecha con HTML, CSS y JavaScript, sin frameworks, sin dependencias y sin p
 
 ## Qué incluye
 
-- **Inicio**: avatar, nivel y XP, racha, **cuenta atrás al examen** con el ritmo necesario, retos diarios, metas semanales y técnica del día.
+- **Inicio**: avatar, nivel y XP, racha, **cofre diario**, **cuenta atrás al examen** con el ritmo necesario, **jefe semanal**, retos diarios, metas semanales y técnica del día.
 - **Foco**: temporizador pomodoro configurable, modo a pantalla completa y lista de tareas diarias.
 - **Plan**: planificador semanal por días, con reparto automático de temas. Lo de hoy pasa solo a las tareas.
 - **Temario**: mapa de temas con vueltas y dominio por colores, repaso espaciado automático a 1, 3, 7 y 30 días, flashcards con sistema de cajas, **simulacro tipo test** (cronómetro, penalización por fallo y banco de preguntas) y cuaderno de errores.
 - **Sonidos**: lofi, lluvia, chimenea, olas y ruido blanco, rosa y marrón, todo generado en el navegador con Web Audio.
 - **Hábitos**: técnicas de estudio por ámbito y apartado.
-- **Avatar**: 26 personajes y decenas de objetos desbloqueables por nivel, por logros o en la tienda con monedas.
+- **Avatar y tienda**: más de 50 personajes en colecciones temáticas y decenas de objetos desbloqueables por nivel, logros o monedas. En la tienda también hay **protectores de racha** y **escenarios de la web** (espacio, bosque nocturno, océano, ciudad neón y aurora boreal).
 - **Progreso**: calendario de días de estudio, minutos por semana, reparto por ámbito, metas semanales y logros.
 - **Ajustes**: instalar la web como app, avisos del pomodoro y copia de seguridad (exportar e importar el progreso).
 
@@ -44,6 +44,7 @@ study-web/
 │   ├── avatar.css
 │   ├── progreso.css
 │   ├── oposicion.css       Cuenta atrás, simulacro y plan semanal
+│   ├── enganche.css        Escenarios, cofre diario, jefe semanal y tienda
 │   ├── modo-foco.css       Temporizador a pantalla completa
 │   ├── avisos.css          Notificaciones y ventana de nivel
 │   ├── ajustes.css         Instalación, avisos y copia de seguridad
@@ -60,7 +61,7 @@ study-web/
     │   └── niveles.js      Curva de niveles, logros y retos
     ├── ui/
     │   ├── efectos.js      Avisos, confeti y subida de nivel
-    │   ├── fondo.js        Estrellas animadas e hiperespacio
+    │   ├── fondo.js        Escenarios animados del fondo e hiperespacio
     │   └── navegacion.js   Pestañas y barra superior
     ├── features/           Una sección de la web por archivo
     │   ├── inicio.js
@@ -74,6 +75,9 @@ study-web/
     │   ├── examen.js       Cuenta atrás al examen
     │   ├── simulacro.js    Simulacro tipo test y banco de preguntas
     │   ├── plan.js         Plan semanal
+    │   ├── jefe.js         Jefe semanal
+    │   ├── cofre.js        Cofre diario
+    │   ├── tienda.js       Protector de racha y escenarios
     │   └── ajustes.js      Ajustes y copia de seguridad
     └── main.js             Eventos y arranque
 ```
