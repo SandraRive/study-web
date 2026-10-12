@@ -132,7 +132,7 @@ function entregaHTML(e){
   </div></div>
   ${S.length?`<div class="exam-prog"><div class="exam-prog-top"><span>Avance del trabajo</span><b>${pct}%</b></div><div class="bar"><i style="width:${pct}%"></i></div>
   <ul class="ent-steps">${S.map((x,i)=>`<li><button class="ent-step${x.done?' on':''}" data-act="exam-step" data-i="${i}" aria-pressed="${x.done}"><span class="ent-box">${x.done?ico('check'):''}</span><span>${esc(x.t)}</span></button></li>`).join('')}</ul></div>`:''}
-  <div class="exam-foot"><span class="exam-status ${st.k}">${ico(st.k==='ok'?'check':st.k?'alert':'target')}${st.txt}</span><span class="aj-actions">${e.done?`<button class="btn sm ghost" data-act="exam-undone">Deshacer</button>`:`<button class="btn sm sun" data-act="exam-done">${ico('check')}Marcar como entregado</button>`}<button class="btn sm" data-act="exam-edit">${ico('edit')}Cambiar</button></span></div>`;}
+  <div class="exam-foot"><span class="exam-status ${st.k}">${ico(st.k==='ok'?'check':st.k?'alert':'target')}${st.txt}</span><span class="aj-actions">${e.done?`<button class="btn sm ghost" data-act="exam-undone">Deshacer</button>`:`<button class="btn sm sun" data-act="exam-done">${ico('check')}Marcar como entregado</button>`}<button class="btn sm ghost" data-act="cal-open">${ico('cal')}Calendario</button><button class="btn sm" data-act="exam-edit">${ico('edit')}Cambiar</button></span></div>`;}
 
 /* ---- Bloque de clases por ver (exámenes de universidad) ---- */
 function classesHTML(e,d){const tot=+e.clsTotal||0;if(e.type!=='uni'||!tot)return '';
@@ -142,7 +142,8 @@ function classesHTML(e,d){const tot=+e.clsTotal||0;if(e.type!=='uni'||!tot)retur
 
 function renderExam(){
  const el=$('#examCard');if(!el)return;
- if(!state.exams.length&&!examEditing){examEditing='new';examDraft=newDraft('opo');}
+ if(examEditing==='new'&&examDraft&&examDraft._auto&&state.exams.length){examEditing=null;examDraft=null;}
+ if(!state.exams.length&&!examEditing){examEditing='new';examDraft=newDraft('opo');examDraft._auto=true;}
  if(examEditing){const ent=isEnt(examDraft);
   el.className='card exam-card exam-setup';
   el.innerHTML=`<div class="card-head"><h2 class="card-title">${ico(ent?'file':'flag')}${examEditing==='new'?(state.exams.length?(ent?'Nueva entrega':'Nuevo examen'):'Cuenta atrás al examen'):(ent?'Editar entrega':'Editar examen')}</h2></div>${state.exams.length?'':`<p class="hint" style="margin-bottom:14px">Pon la fecha de tu examen y te diré cuántos días quedan, cuánto temario te falta y a qué ritmo tienes que ir para llegar. Puedes añadir varios: la oposición, cada examen de la uni y tus entregas de trabajos.</p>`}${examFormHTML()}`;return;}
@@ -164,7 +165,7 @@ function renderExam(){
   </div></div>
   ${classesHTML(e,d)}
   <div class="exam-prog"><div class="exam-prog-top"><span>${esc(scopeTxt)}: ${I2.done}/${I2.total} ${U} (${I2.V} por tema · ${I2.tps.length} temas)</span><b>${pct}%</b></div><div class="bar"><i style="width:${pct}%"></i></div></div>
-  <div class="exam-foot"><span class="exam-status ${I2.status.k}">${ico(I2.status.k==='ok'?'check':I2.status.k?'alert':'target')}${I2.status.txt}</span><span class="aj-actions">${lastTest&&e.type==='opo'?`<span class="chip">Último simulacro: ${fmt1(lastTest.score)}</span>`:''}<button class="btn sm" data-act="exam-edit">${ico('edit')}Cambiar</button></span></div>`;
+  <div class="exam-foot"><span class="exam-status ${I2.status.k}">${ico(I2.status.k==='ok'?'check':I2.status.k?'alert':'target')}${I2.status.txt}</span><span class="aj-actions">${lastTest&&e.type==='opo'?`<span class="chip">Último simulacro: ${fmt1(lastTest.score)}</span>`:''}<button class="btn sm ghost" data-act="cal-open">${ico('cal')}Calendario</button><button class="btn sm" data-act="exam-edit">${ico('edit')}Cambiar</button></span></div>`;
 }
 
 function parseSteps(txt,old){const prev={};(old||[]).forEach(s=>prev[s.t]=s.done);return (txt||'').split('\n').map(s=>s.trim()).filter(Boolean).slice(0,20).map(t=>({t:t.slice(0,80),done:!!prev[t]}));}

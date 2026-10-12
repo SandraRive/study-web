@@ -23,7 +23,7 @@ function pauseTimer(){const t=state.timer;if(!t.running)return;t.remaining=Math.
 function setMode(m){const t=state.timer;t.running=false;t.endAt=null;disarmEnd();t.mode=m;t.remaining=durOf(m);save();renderTimer();renderHudTimer();}
 function completeTimer(silent){const t=state.timer,s=state.settings;const endAt=t.endAt||Date.now();t.running=false;t.endAt=null;disarmEnd();let next;
  if(t.mode==='work'){state.pomoLog.push({at:Math.min(Date.now(),endAt)-s.work*30000,m:s.work});if(state.pomoLog.length>3000)state.pomoLog.shift();state.pomo.total++;state.pomo.minutes+=s.work;state.day.pomos++;state.day.minutes+=s.work;const tk=state.tasks.find(x=>x.id===t.taskId);if(tk)tk.pomos++;const L=logDay();L.min+=s.work;L.pomos++;const sc=tk?tk.scope:'otro';L.sc[sc]=(L.sc[sc]||0)+s.work;t.cycle++;bumpStreak();if(!silent)chime();grantXP(25,'Pomodoro completado',10);bossHit(s.work*1.6,'Pomodoro');next=(t.cycle%s.every===0)?'long':'short';if(!silent)toast(`<b>¡Bloque terminado!</b> Toca ${next==='long'?'descanso largo':'descanso'}.`,'timer');}
- else{if(!silent){chime();toast('<b>Descanso terminado.</b> A por el siguiente bloque.','timer');}next='work';}
+ else{if(typeof careRestDone==='function')careRestDone();if(!silent){chime();toast('<b>Descanso terminado.</b> A por el siguiente bloque.','timer');}next='work';}
  if(!silent)notifyTimer(t.mode,next);
  t.mode=next;t.remaining=durOf(next);if(s.auto&&!silent)startTimer();afterAction();renderTimer();}
 setInterval(()=>{const t=state.timer;if(t.running&&Date.now()>=t.endAt)completeTimer(false);if(state.ui.tab==='foco'||!$('#zen').hidden)renderTimer();else if(t.running)document.title=`${fmt(Math.ceil(remainingNow()))} · ${t.mode==='work'?'Foco':'Descanso'}`;renderHudTimer();},250);

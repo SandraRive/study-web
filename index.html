@@ -36,6 +36,7 @@
 <link rel="stylesheet" href="css/calidad.css">
 <link rel="stylesheet" href="css/fisicas.css">
 <link rel="stylesheet" href="css/informe.css">
+<link rel="stylesheet" href="css/diaadia.css">
 <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -85,6 +86,7 @@
     <button class="repair-banner report-banner" id="reportBanner" hidden></button>
     <article class="card exam-card" id="examCard"></article>
     <article class="card boss-card" id="bossCard"></article>
+    <article class="card care-card" id="careCard"></article>
     <article class="card diary-card" id="diaryCard"></article>
     <div class="home-grid">
       <article class="card">
@@ -356,6 +358,8 @@
     <div class="aj-grid">
       <article class="card" id="ajApp"></article>
       <article class="card" id="ajNotif"></article>
+      <article class="card span2" id="ajSync"></article>
+      <article class="card span2" id="ajCal"></article>
       <article class="card span2" id="ajBackup"></article>
       <article class="card span2 aj-danger" id="ajDanger"></article>
     </div>
@@ -386,6 +390,12 @@
 </div>
 <div class="modal rep-modal" id="repModal" hidden>
   <div class="card modal-card rep-mcard" role="dialog" aria-modal="true" aria-label="Imagen del informe semanal"><div id="repBody"></div></div>
+</div>
+<div class="modal cal-modal" id="calModal" hidden>
+  <div class="card modal-card cal-card" role="dialog" aria-modal="true" aria-label="Añadir al calendario"><div id="calBody"></div></div>
+</div>
+<div class="modal sync-modal" id="syncModal" hidden>
+  <div class="card modal-card sync-card" role="dialog" aria-modal="true" aria-label="Pasar el progreso a otro dispositivo"><div id="syncBody"></div></div>
 </div>
 <div class="modal" id="backModal" hidden>
   <div class="card modal-card back-card" role="dialog" aria-modal="true" aria-label="Mientras no estabas"><div id="backBody"></div></div>
@@ -430,6 +440,9 @@
 <script src="js/features/diario.js"></script>
 <script src="js/features/fisicas.js"></script>
 <script src="js/features/informe.js"></script>
+<script src="js/features/calendario.js"></script>
+<script src="js/features/sincro.js"></script>
+<script src="js/features/cuidado.js"></script>
 <script src="js/features/simulacro.js"></script>
 <script src="js/features/plan.js"></script>
 <script src="js/features/jefe.js"></script>

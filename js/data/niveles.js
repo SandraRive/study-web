@@ -39,6 +39,7 @@ const ACH=[
  {id:'fisico1',name:'Calentando motores',desc:'Apunta tu primera marca en Pruebas físicas',icon:'run',xp:30,p:s=>[Math.min(((s.phys&&s.phys.tests)||[]).reduce((n,t)=>n+t.marks.length,0),1),1]},
  {id:'record5',name:'Rompe-récords',desc:'Bate 5 récords en tus pruebas físicas',icon:'trophy',xp:80,p:s=>[Math.min(s.counts.records||0,5),5]},
  {id:'aptaTodo',name:'Apta en todo',desc:'Supera el mínimo en todas tus pruebas físicas (al menos 3)',icon:'shield',xp:150,p:s=>{const T=((s.phys&&s.phys.tests)||[]).filter(t=>t.min!=null);const ok=T.filter(t=>t.marks.some(m=>t.better==='low'?m.v<=t.min:m.v>=t.min)).length;return [T.length>=3?ok:Math.min(ok,2),T.length>=3?T.length:3];}},
+ {id:'cuidado7',name:'Mente sana',desc:'Cumple tu autocuidado 7 días seguidos (3 de 4 objetivos)',icon:'sparkle',xp:80,p:s=>[Math.min(typeof careBest==='function'?careBest():0,7),7]},
  {id:'fenix',name:'Ave fénix',desc:'Repara una racha perdida',icon:'flame',xp:40,p:s=>[Math.min(s.counts.repairs||0,1),1]},
  {id:'revancha',name:'Revancha cumplida',desc:'Derrota a un jefe que había vuelto para su revancha',icon:'trophy',xp:150,p:s=>[Math.min(s.counts.revengeWins||0,1),1]},
  {id:'ambiente',name:'Ambiente creado',desc:'Activa tu primer sonido',icon:'music',xp:15,p:s=>[s.soundsUsed?1:0,1]},
