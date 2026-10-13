@@ -159,7 +159,7 @@ function showBossHit(n,from,to,max,id,won,why){
  if(again){bossPop.dmg+=n;}else{bossPop.dmg=n;bossPop.from=from;}
  clearTimeout(bossPop.timer);
  const pf=bossPop.from/max*100,pt=to/max*100,em=ATK[why]||'⚡';
- const hero=typeof avatarFullSVG==='function'?avatarFullSVG(state.avatar):avatarSVG(state.avatar);
+ const hero=typeof avatarFullSVG==='function'?avatarFullSVG(state.avatar,{cls:'fb-atk'}):avatarSVG(state.avatar);
  el.innerHTML=`<div class="bp-card${won?' win':''}${again?' again':''}">
   <div class="bp-arena"><div class="bp-hero">${hero}</div><span class="bp-shot" aria-hidden="true">${em}</span>
    <div class="bp-art">${bossSVG(id,won)}<svg class="bp-slash" viewBox="0 0 100 100" aria-hidden="true"><path d="M12 82 Q50 50 90 14" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M12 82 Q50 50 90 14" fill="none" stroke="#FFE14D" stroke-width="4" stroke-linecap="round"/></svg><span class="bp-flash"></span><span class="bp-dmg">−${bossPop.dmg}</span></div></div>

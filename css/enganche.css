@@ -204,3 +204,24 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 .bg-hname{font-weight:700;overflow-wrap:anywhere}
 @media (max-width:560px){.bg-hist li{grid-template-columns:36px minmax(0,1fr);}.bg-week{display:none}.bg-hist li .chip{grid-column:2;justify-self:start}}
 .bp-dmg{position:absolute;left:50%;top:2%;transform:translateX(-50%);font:900 clamp(38px,10vw,56px)/1 var(--f-display);color:#fff;white-space:nowrap;text-shadow:0 0 18px var(--pink),0 0 34px var(--pink),0 4px 0 #000;animation:bpDmg 1.6s cubic-bezier(.2,.8,.2,1) .55s both;pointer-events:none}
+
+/* ---- El avatar ataca con todo el cuerpo: corre, coge impulso, golpea y celebra ----
+   Va sincronizado con heroAtk (1,25 s): llega 0–22 %, impulso 22–34 %, golpe 46 %, vuelta 78 %, saltito 88 %. */
+.fb-atk .fb-arm-r{animation:atkArmR 1.25s cubic-bezier(.3,.7,.3,1) both,fbArmR 3.2s ease-in-out 1.25s infinite}
+.fb-atk .fb-arm-l{animation:atkArmL 1.25s cubic-bezier(.3,.7,.3,1) both,fbArmL 3.2s ease-in-out 1.25s infinite}
+.fb-atk .fb-head{animation:atkHead 1.25s ease-in-out both,fbHead 4.6s ease-in-out 1.25s infinite}
+.fb-atk .fb-up{animation:atkUp 1.25s cubic-bezier(.3,.7,.3,1) both,fbBreath 3.2s ease-in-out 1.25s infinite}
+.fb-atk .fb-all{animation:atkRun 1.25s ease-in-out both}
+@keyframes atkArmR{0%{transform:rotate(30deg)}6%{transform:rotate(-30deg)}12%{transform:rotate(30deg)}18%{transform:rotate(-30deg)}24%{transform:rotate(-40deg)}34%{transform:rotate(-165deg)}46%{transform:rotate(-70deg)}56%{transform:rotate(-55deg)}72%{transform:rotate(-10deg)}86%{transform:rotate(-160deg)}94%{transform:rotate(-150deg)}100%{transform:rotate(0)}}
+@keyframes atkArmL{0%{transform:rotate(-30deg)}6%{transform:rotate(30deg)}12%{transform:rotate(-30deg)}18%{transform:rotate(30deg)}24%{transform:rotate(10deg)}34%{transform:rotate(-25deg)}46%{transform:rotate(45deg)}56%{transform:rotate(35deg)}78%{transform:rotate(0)}86%{transform:rotate(25deg)}100%{transform:rotate(0)}}
+@keyframes atkHead{0%,22%{transform:rotate(4deg)}34%{transform:rotate(-9deg)}46%{transform:rotate(10deg)}60%{transform:rotate(6deg)}78%{transform:rotate(0)}88%{transform:rotate(-6deg) translateY(-2px)}100%{transform:rotate(0)}}
+@keyframes atkUp{0%,22%{transform:rotate(5deg)}34%{transform:rotate(-7deg) translateY(2px)}46%{transform:rotate(9deg) translateY(-2px)}58%{transform:rotate(6deg)}78%,100%{transform:rotate(0)}}
+@keyframes atkRun{0%,12%,24%{transform:translateY(0)}6%,18%{transform:translateY(-7px)}30%{transform:translateY(3px) scale(1.04,.95)}38%{transform:translateY(0)}100%{transform:none}}
+/* Golpe rápido cuando encadenas varios */
+.bp-card.again .fb-atk .fb-arm-r{animation:againArmR .5s ease-out both,fbArmR 3.2s ease-in-out .5s infinite}
+.bp-card.again .fb-atk .fb-up{animation:againUp .5s ease-out both,fbBreath 3.2s ease-in-out .5s infinite}
+.bp-card.again .fb-atk .fb-head{animation:againUp .5s ease-out both,fbHead 4.6s ease-in-out .5s infinite}
+.bp-card.again .fb-atk .fb-arm-l,.bp-card.again .fb-atk .fb-all{animation:none}
+@keyframes againArmR{0%{transform:rotate(-150deg)}40%{transform:rotate(-65deg)}100%{transform:rotate(0)}}
+@keyframes againUp{0%{transform:rotate(-5deg)}40%{transform:rotate(8deg)}100%{transform:rotate(0)}}
+@media (prefers-reduced-motion:reduce){.fb-atk *{animation:none!important}}
