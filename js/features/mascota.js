@@ -67,8 +67,10 @@ function wrapPet(inner,p,mood,opts,st,sc){sc=sc||.8;const tr=`translate(${80-80*
  return `<svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(p.name||'Mascota')}" class="pet-svg m-${mood}${opts.cls?' '+opts.cls:''}"><ellipse cx="80" cy="152" rx="${30+st*6}" ry="6" fill="#000" opacity=".3"/><g class="pet-body"><g transform="${tr}">${inner}</g></g></svg>`;}
 
 /* ---- Acciones ---- */
+const PET_SNACK_MIN=15;
 function petFeedFromStudy(min){const p=state.pet;if(!p||!p.species)return;petTick();const before=petStage(p);
- p.xp+=min;p.food=Math.min(100,p.food+Math.round(min*.9));p.joy=Math.min(100,p.joy+Math.round(min*.3));p.snacks=Math.min(9,(p.snacks||0)+1);
+ p.xp+=min;p.food=Math.min(100,p.food+Math.round(min*.9));p.joy=Math.min(100,p.joy+Math.round(min*.3));/* Solo los pomodoros de 15 min o más dan snack (así no vale hacer trampa con pomodoros cortitos) */
+ if(min>=PET_SNACK_MIN)p.snacks=Math.min(9,(p.snacks||0)+1);
  const after=petStage(p);if(after>before)petEvolve(before,after);}
 /* Escena del nacimiento: el huevo tiembla, se agrieta, brilla y se parte en dos */
 function hatchSVG(p){const SP=PET_SPECIES[p.species],c=SP.c,c2=SP.c2,id='h'+uid();
@@ -104,7 +106,7 @@ function petEvolve(from,to){const p=state.pet;p.food=Math.max(p.food,80);p.joy=M
   m.hidden=false;m.classList.remove('hatching');setTimeout(()=>confetti(140),2200);},900);}
 function petAction(kind){const p=state.pet;if(!p||!p.species)return;petTick();if(petStage(p)===0){toast('Primero tiene que nacer: completa un pomodoro.','timer');return;}
  if(Date.now()<petAnimUntil)return; /* deja que acabe la animación anterior */
- if(kind==='snack'){if(!(p.snacks>0)){toast('No te quedan snacks. Cada pomodoro te da uno.','timer');return;}p.snacks--;p.food=Math.min(100,p.food+25);p.joy=Math.min(100,p.joy+5);save();renderPet();petPlay('snack');return;}
+ if(kind==='snack'){if(!(p.snacks>0)){toast(`No te quedan snacks. Cada pomodoro de ${PET_SNACK_MIN} min o más te da uno.`,'timer');return;}p.snacks--;p.food=Math.min(100,p.food+25);p.joy=Math.min(100,p.joy+5);save();renderPet();petPlay('snack');return;}
  const t=today();if(p.petDay!==t){p.petDay=t;p.pets=0;}
  if(p.pets>=6){petPlay('nope');toast('Ya le has dado muchos mimos hoy. ¡Ahora toca estudiar!','sparkle');return;}
  p.pets++;p.joy=Math.min(100,p.joy+6);save();renderPet();petPlay('pat');}
@@ -153,7 +155,7 @@ function renderPet(){const el=$('#petCard');if(!el)return;const p=state.pet;
  <div class="pet-info"><p class="pet-mood">${MOOD_TXT[mood]}</p>
   ${st>0?bar(p.food,'food','Energía','🍎')+bar(p.joy,'joy','Ánimo','💖'):''}
   <div class="pet-st"><span>⭐ ${nx?(st===0?`Para nacer: ${p.xp} de ${nx.min} min de foco`:`Hacia ${nx.n.toLowerCase()}: ${fmtMin(p.xp)} de ${Math.round(nx.min/60)} h`):'Forma final alcanzada'}</span><span class="care-bar grow"><i style="width:${pct}%"></i></span></div>
-  ${st>0?`<div class="aj-actions"><button class="btn sm" data-act="pet-pet">💖 Mimos</button><button class="btn sm sun" data-act="pet-snack" ${p.snacks>0?'':'disabled'}>🍪 Snack · ${p.snacks||0}</button></div>`:''}</div></div>`;
+  ${st>0?`<div class="aj-actions"><button class="btn sm" data-act="pet-pet">💖 Mimos</button><button class="btn sm sun" data-act="pet-snack" title="Ganas uno por cada pomodoro de ${PET_SNACK_MIN} min o más (máx. 9)" ${p.snacks>0?'':'disabled'}>🍪 Snack · ${p.snacks||0}</button></div>`:''}</div></div>`;
  if(keep){const ns=$('#petStage');if(ns)ns.replaceWith(keep);}}
 /* Mini mascota que estudia contigo en Foco */
 function renderPetMini(){const el=$('#petMini');if(!el)return;const p=state.pet;if(!p||!p.species){el.hidden=true;return;}el.hidden=false;
