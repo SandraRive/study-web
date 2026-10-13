@@ -3,6 +3,14 @@
 
 /* ================= AVATAR Y TIENDA ================= */
 let pendingBuy=null;
+/* Personaje vivo en la pantalla de Avatar (motor en js/ui/animador.js) */
+let avRig=null;
+const AV_POSES=[['wave','👋','Saludar'],['run','🏃','Correr'],['hit','⚔️','Golpe'],['victory','🏆','Victoria']];
+function avPose(k){if(!avRig||!avRig.svg.isConnected)return;const svg=avRig.svg;
+ svg.classList.remove('st-run','st-hit','st-win');void svg.getBoundingClientRect();svg.classList.add(k==='run'?'st-run':k==='hit'?'st-hit':k==='victory'?'st-win':'st-wave');
+ avRig.onImpact=k==='hit'?()=>{const st=$('#avStage');st.classList.remove('shake');void st.offsetWidth;st.classList.add('shake');}:null;
+ if(k==='victory'&&typeof confetti==='function')setTimeout(()=>confetti(50),300);
+ avRig.play(k,{},()=>svg.classList.remove('st-run','st-hit','st-win','st-wave'));}
 /* Pestaña «Desbloqueados»: todo lo que ya es tuyo, ordenado por secciones */
 const MINE_ICON='<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg>';
 function countUnlocked(){let tot=0,un=0;for(const c in ITEMS)for(const it of ITEMS[c]){if(it.id==='none')continue;tot++;if(isUnlocked(it))un++;}return {tot,un};}
@@ -18,7 +26,10 @@ function mineHTML(){let o='';
   o+=got.length?got.map(it=>itemBtn(it,c,'mine')).join(''):`<div class="ig-empty">Aún no tienes nada de ${esc(l.toLowerCase())}. ¡Sigue sumando XP!</div>`;}
  return o;}
 function renderAvatar(){const L=levelInfo(state.xp);const full=state.ui.avView!=='retrato';
- $('#avStage').innerHTML=full?avatarFullSVG(state.avatar,{bg:true,anim:true}):avatarSVG(state.avatar);$('#avStage').classList.toggle('full',full);
+ $('#avStage').innerHTML=full?avatarFullSVG(state.avatar,{bg:true,stage:true}):avatarSVG(state.avatar);$('#avStage').classList.toggle('full',full);
+ avRig=full&&typeof rigAttach==='function'?rigAttach($('#avStage svg.rig')):null;
+ {let pz=$('#avPoses');if(!pz){pz=document.createElement('div');pz.id='avPoses';pz.className='av-poses';$('#avStage').after(pz);}
+  pz.hidden=!full;pz.innerHTML=AV_POSES.map(([k,e,l])=>`<button class="av-pose" data-act="av-pose" data-p="${k}" title="${l}"><span>${e}</span>${l}</button>`).join('');}
  {const vt=$('#avViewTog');if(vt)vt.innerHTML=[['cuerpo','Cuerpo entero'],['retrato','Retrato']].map(([k,l])=>`<button data-act="av-view" data-v="${k}" aria-pressed="${(state.ui.avView||'cuerpo')===k}">${l}</button>`).join('');}
  $('#avName').textContent=state.name||'Sin nombre';const {tot,un}=countUnlocked();
  $('#avSub').textContent=`Nivel ${L.level} · ${un}/${tot} objetos`;$('#avPurse').innerHTML=coinTxt(state.coins);$('#avRandom').innerHTML=`${ico('shuffle')}Combinación aleatoria`;
@@ -38,6 +49,7 @@ function clickItem(cat,id){const it=ITEMS[cat].find(x=>x.id===id);if(!it)return;
  toast(`<b>${esc(it.name)}</b> está bloqueado. Necesitas: ${esc(reqText(it.u))}`,'lock');}
 
 /* Saludo: da un saltito y mueve la mano (al tocarlo o al cambiarle algo) */
-function avatarCheer(){const s=document.querySelector('#avStage svg.fb-anim');if(!s)return;s.classList.remove('wave');void s.getBoundingClientRect();s.classList.add('wave');setTimeout(()=>s.classList.remove('wave'),1300);}
+function avatarCheer(){avPose('wave');}
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act="av-view"]');if(el){state.ui.avView=el.dataset.v;save();renderAvatar();return;}
+ const pb=e.target.closest('[data-act="av-pose"]');if(pb){avPose(pb.dataset.p);return;}
  if(e.target.closest('#avStage'))avatarCheer();});

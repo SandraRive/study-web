@@ -37,31 +37,36 @@
 .ig-head b{order:2;font:700 11px var(--f-mono);background:var(--surface-2);border:2px solid var(--line);border-radius:999px;padding:2px 8px}
 .ig-empty{grid-column:1/-1;color:var(--muted);font-size:14px;font-weight:600;padding:4px 2px 6px}
 
-/* ---------- Avatar de cuerpo entero que se mueve ---------- */
-.fb .fb-all,.fb .fb-up,.fb .fb-head,.fb .fb-arm{transform-box:view-box}
-.fb .fb-all{transform-origin:100px 282px}
-.fb .fb-up{transform-origin:100px 200px}
-.fb .fb-head{transform-origin:100px 110px}
-.fb .fb-arm-l{transform-origin:66px 117px}
-.fb .fb-arm-r{transform-origin:134px 117px}
-.fb-anim .fb-up{animation:fbBreath 3.2s ease-in-out infinite}
-.fb-anim .fb-head{animation:fbHead 4.6s ease-in-out infinite}
-.fb-anim .fb-arm-l{animation:fbArmL 3.2s ease-in-out infinite}
-.fb-anim .fb-arm-r{animation:fbArmR 3.2s ease-in-out infinite}
-.fb-anim .fb-shadow{transform-box:view-box;transform-origin:100px 286px}
-@keyframes fbBreath{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-2px) scaleY(1.012)}}
-@keyframes fbHead{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}50%{transform:rotate(0) translateY(-1px)}75%{transform:rotate(2.5deg)}}
-@keyframes fbArmL{0%,100%{transform:rotate(0)}50%{transform:rotate(4deg)}}
-@keyframes fbArmR{0%,100%{transform:rotate(0)}50%{transform:rotate(-4deg)}}
-/* Saludo al tocarlo */
-.fb-anim.wave .fb-all{animation:fbJump .6s cubic-bezier(.3,1.6,.5,1) 2}
-.fb-anim.wave .fb-shadow{animation:fbShadow .6s ease-in-out 2}
-.fb-anim.wave .fb-arm-r{animation:fbWave 1.2s ease-in-out}
-.fb-anim.wave .fb-head{animation:fbHeadTilt 1.2s ease-in-out}
-@keyframes fbJump{0%,100%{transform:translateY(0) scale(1,1)}15%{transform:translateY(0) scale(1.05,.94)}45%{transform:translateY(-14px) scale(.97,1.04)}80%{transform:translateY(0) scale(1.03,.97)}}
-@keyframes fbShadow{0%,100%{transform:scale(1);opacity:.3}45%{transform:scale(.75);opacity:.18}}
-@keyframes fbWave{0%{transform:rotate(0)}20%{transform:rotate(-135deg)}35%{transform:rotate(-115deg)}50%{transform:rotate(-140deg)}65%{transform:rotate(-115deg)}80%{transform:rotate(-135deg)}100%{transform:rotate(0)}}
-@keyframes fbHeadTilt{0%,100%{transform:rotate(0)}30%,70%{transform:rotate(6deg)}}
 #avStage.full{cursor:pointer}
-@media (prefers-reduced-motion:reduce){.fb-anim *{animation:none!important}}
 .item.sel .item-lock{color:var(--on-acc);opacity:.8}
+
+/* ---------- Personaje de videojuego: escenario, parpadeo y poses ---------- */
+.rig-live .av-eye{transform-box:fill-box;transform-origin:50% 55%;animation:avBlink 4.2s infinite}
+@keyframes avBlink{0%,93%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
+.rig-stage .rig-beam{animation:rigBeam 3.6s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 0}
+@keyframes rigBeam{0%,100%{opacity:.75}50%{opacity:1}}
+.rig-stage .rig-ring{animation:rigRing 2.4s linear infinite}
+@keyframes rigRing{to{stroke-dashoffset:-72}}
+.rig-stage .rig-glow{animation:rigBeam 2.4s ease-in-out infinite}
+.rig-spark{transform-box:fill-box;animation:rigSpark 3.6s ease-out infinite;opacity:0}
+@keyframes rigSpark{0%{opacity:0;transform:translateY(0)}15%{opacity:.95}100%{opacity:0;transform:translateY(-190px)}}
+.rig-floor{opacity:0;transition:opacity .2s}
+.rig.st-run .rig-floor{opacity:1}
+.rig.st-run .rig-floor path{animation:rigFloor .35s linear infinite}
+@keyframes rigFloor{to{stroke-dashoffset:38}}
+.rig.st-run .rig-beam{opacity:.5;animation:none}
+.rig-slash{opacity:0;pointer-events:none}
+.rig-slash path{stroke-dasharray:200;stroke-dashoffset:200}
+.rig.st-hit .rig-slash{animation:rigSlash .45s ease-out .29s both}
+.rig.st-hit .rig-slash path{animation:rigDraw .18s ease-out .29s forwards}
+@keyframes rigSlash{0%{opacity:1}70%{opacity:1}100%{opacity:0}}
+@keyframes rigDraw{to{stroke-dashoffset:0}}
+#avStage.shake{animation:avShake .25s linear}
+@keyframes avShake{0%,100%{translate:0 0}25%{translate:-5px 2px}50%{translate:4px -3px}75%{translate:-2px 1px}}
+#avStage.full svg{border-radius:22px;box-shadow:0 0 0 3px var(--line),0 14px 34px rgba(47,107,255,.35)}
+.av-poses{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:min(100%,260px)}
+.av-pose{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border:3px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:800 11px var(--f-body);cursor:pointer;transition:transform .12s}
+.av-pose span{font-size:20px;line-height:1}
+.av-pose:hover{transform:translateY(-2px)}
+.av-pose:active{transform:translateY(1px) scale(.97)}
+@media (prefers-reduced-motion:reduce){.rig-live .av-eye,.rig-stage .rig-beam,.rig-stage .rig-ring,.rig-spark,.rig-slash,#avStage.shake{animation:none!important}.av-poses{display:none}}

@@ -1,7 +1,7 @@
 /* Service worker de Misión Estudio: guarda la web en el dispositivo para que funcione sin conexión.
    Con conexión siempre carga la última versión; sin conexión usa la copia guardada.
    Si añades o quitas archivos, actualiza la lista APP y sube VERSION. */
-const VERSION='2026-10-13.16';
+const VERSION='2026-10-13.18';
 const CACHE='mision-estudio-'+VERSION;
 const FONTS='mision-estudio-fuentes';
 const APP=[
@@ -73,7 +73,7 @@ const APP=[
   'js/features/temario.js',
   'js/features/tienda.js',
   'js/main.js',
-  'js/ui/efectos.js',
+  'js/ui/efectos.js','js/ui/animador.js',
   'js/ui/fondo.js',
   'js/ui/navegacion.js',
   'manifest.webmanifest'

@@ -120,7 +120,7 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 .boss-pop.out{opacity:0;transition:opacity .4s}
 .bp-card{display:flex;flex-direction:column;align-items:center;gap:8px;width:min(92vw,420px);margin-bottom:14vh;animation:bpPop .35s cubic-bezier(.2,1.5,.4,1)}
 .bp-arena{position:relative;width:100%;display:flex;align-items:flex-end;justify-content:space-between;gap:4%}
-.bp-hero{width:34%;flex:none;transform-origin:50% 100%;animation:heroAtk 1.25s cubic-bezier(.3,.7,.3,1) both}
+.bp-hero{width:34%;flex:none;position:relative;z-index:2;will-change:transform;transform:translateX(-150%)}
 .bp-hero svg{width:100%;height:auto;display:block;filter:drop-shadow(0 6px 0 rgba(0,0,0,.4))}
 .bp-art{position:relative;width:52%;flex:none}
 .bp-art>svg:first-child{width:100%;height:auto;display:block;animation:bossHit .4s ease-in-out .55s 2;transform-origin:50% 90%}
@@ -128,8 +128,8 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 .bp-slash{position:absolute;inset:4% 6%;width:88%;height:auto;opacity:0;animation:bpSlash .42s ease-out .5s both;pointer-events:none}
 .bp-slash path{stroke-dasharray:130;stroke-dashoffset:130;animation:bpDraw .25s ease-out .5s forwards}
 .bp-flash{position:absolute;inset:10%;border-radius:50%;background:radial-gradient(circle,#fff 0%,rgba(255,225,77,.7) 35%,transparent 70%);opacity:0;animation:bpFlash .45s ease-out .55s both;pointer-events:none}
-.bp-shot{position:absolute;left:24%;bottom:42%;font-size:clamp(28px,8vw,40px);line-height:1;opacity:0;animation:bpShot .42s cubic-bezier(.5,0,.9,.6) .25s both;filter:drop-shadow(0 3px 0 rgba(0,0,0,.5))}
-.bp-card.again .bp-hero{animation:heroAgain .5s ease-out both}
+.bp-shot{position:absolute;left:24%;bottom:42%;font-size:clamp(28px,8vw,40px);line-height:1;opacity:0;animation:bpShot .2s cubic-bezier(.5,0,.9,.6) .4s both;filter:drop-shadow(0 3px 0 rgba(0,0,0,.5))}
+.bp-card.again .bp-hero{transform:none}
 .bp-card.again .bp-shot{animation-delay:0s}
 .bp-card.again .bp-art>svg:first-child,.bp-card.again .bp-slash,.bp-card.again .bp-slash path,.bp-card.again .bp-flash{animation-delay:.1s}
 .bp-card.again .bp-dmg{animation-delay:.1s}
@@ -205,26 +205,7 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 @media (max-width:560px){.bg-hist li{grid-template-columns:36px minmax(0,1fr);}.bg-week{display:none}.bg-hist li .chip{grid-column:2;justify-self:start}}
 .bp-dmg{position:absolute;left:50%;top:2%;transform:translateX(-50%);font:900 clamp(38px,10vw,56px)/1 var(--f-display);color:#fff;white-space:nowrap;text-shadow:0 0 18px var(--pink),0 0 34px var(--pink),0 4px 0 #000;animation:bpDmg 1.6s cubic-bezier(.2,.8,.2,1) .55s both;pointer-events:none}
 
-/* ---- El avatar ataca con todo el cuerpo: corre, coge impulso, golpea y celebra ----
-   Va sincronizado con heroAtk (1,25 s): llega 0–22 %, impulso 22–34 %, golpe 46 %, vuelta 78 %, saltito 88 %. */
-.fb-atk .fb-arm-r{animation:atkArmR 1.25s cubic-bezier(.3,.7,.3,1) both,fbArmR 3.2s ease-in-out 1.25s infinite}
-.fb-atk .fb-arm-l{animation:atkArmL 1.25s cubic-bezier(.3,.7,.3,1) both,fbArmL 3.2s ease-in-out 1.25s infinite}
-.fb-atk .fb-head{animation:atkHead 1.25s ease-in-out both,fbHead 4.6s ease-in-out 1.25s infinite}
-.fb-atk .fb-up{animation:atkUp 1.25s cubic-bezier(.3,.7,.3,1) both,fbBreath 3.2s ease-in-out 1.25s infinite}
-.fb-atk .fb-all{animation:atkRun 1.25s ease-in-out both}
-@keyframes atkArmR{0%{transform:rotate(30deg)}6%{transform:rotate(-30deg)}12%{transform:rotate(30deg)}18%{transform:rotate(-30deg)}24%{transform:rotate(-40deg)}34%{transform:rotate(-165deg)}46%{transform:rotate(-70deg)}56%{transform:rotate(-55deg)}72%{transform:rotate(-10deg)}86%{transform:rotate(-160deg)}94%{transform:rotate(-150deg)}100%{transform:rotate(0)}}
-@keyframes atkArmL{0%{transform:rotate(-30deg)}6%{transform:rotate(30deg)}12%{transform:rotate(-30deg)}18%{transform:rotate(30deg)}24%{transform:rotate(10deg)}34%{transform:rotate(-25deg)}46%{transform:rotate(45deg)}56%{transform:rotate(35deg)}78%{transform:rotate(0)}86%{transform:rotate(25deg)}100%{transform:rotate(0)}}
-@keyframes atkHead{0%,22%{transform:rotate(4deg)}34%{transform:rotate(-9deg)}46%{transform:rotate(10deg)}60%{transform:rotate(6deg)}78%{transform:rotate(0)}88%{transform:rotate(-6deg) translateY(-2px)}100%{transform:rotate(0)}}
-@keyframes atkUp{0%,22%{transform:rotate(5deg)}34%{transform:rotate(-7deg) translateY(2px)}46%{transform:rotate(9deg) translateY(-2px)}58%{transform:rotate(6deg)}78%,100%{transform:rotate(0)}}
-@keyframes atkRun{0%,12%,24%{transform:translateY(0)}6%,18%{transform:translateY(-7px)}30%{transform:translateY(3px) scale(1.04,.95)}38%{transform:translateY(0)}100%{transform:none}}
-/* Golpe rápido cuando encadenas varios */
-.bp-card.again .fb-atk .fb-arm-r{animation:againArmR .5s ease-out both,fbArmR 3.2s ease-in-out .5s infinite}
-.bp-card.again .fb-atk .fb-up{animation:againUp .5s ease-out both,fbBreath 3.2s ease-in-out .5s infinite}
-.bp-card.again .fb-atk .fb-head{animation:againUp .5s ease-out both,fbHead 4.6s ease-in-out .5s infinite}
-.bp-card.again .fb-atk .fb-arm-l,.bp-card.again .fb-atk .fb-all{animation:none}
-@keyframes againArmR{0%{transform:rotate(-150deg)}40%{transform:rotate(-65deg)}100%{transform:rotate(0)}}
-@keyframes againUp{0%{transform:rotate(-5deg)}40%{transform:rotate(8deg)}100%{transform:rotate(0)}}
-@media (prefers-reduced-motion:reduce){.fb-atk *{animation:none!important}}
+
 
 /* ---- Guardia y esquivas del jefe ---- */
 .boss-guard{display:flex;align-items:center;gap:10px;padding:8px 12px;border:2px dashed var(--line);border-radius:12px;background:var(--surface-2);margin:2px 0 4px;text-align:left}
@@ -245,3 +226,18 @@ html[data-scene="aurora"] .moon{left:auto;right:16%;top:12%;width:5vmin;height:5
 @keyframes bpSlashMiss{0%{opacity:0;transform:translateX(-30%)}30%{opacity:1}100%{opacity:0;transform:translateX(-10%) translateY(20%)}}
 @media (prefers-reduced-motion:reduce){.bp-card.dodge .bp-art>svg:first-child,.bp-crit{animation:none!important}}
 .bp-card.dodge .bp-dmg{left:22%}
+
+/* ---- Ataque animado por el motor (js/ui/animador.js): polvo, líneas de velocidad e impacto ---- */
+.bp-hero.running::before{content:"";position:absolute;right:70%;top:30%;width:90%;height:40%;background:repeating-linear-gradient(180deg,transparent 0 9px,rgba(255,255,255,.55) 9px 11px);-webkit-mask:linear-gradient(90deg,transparent,#000);mask:linear-gradient(90deg,transparent,#000);opacity:.8;pointer-events:none}
+.bp-dust{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#fff,#C9D3E6 60%,rgba(201,211,230,0) 72%);pointer-events:none;animation:bpDust .5s ease-out forwards;z-index:1}
+@keyframes bpDust{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:translate(-26px,-10px) scale(1.5)}}
+.bp-card.impact{animation:bpShake .26s linear}
+@keyframes bpShake{0%,100%{translate:0 0}20%{translate:-7px 3px}40%{translate:6px -4px}60%{translate:-4px 2px}80%{translate:3px -1px}}
+.bp-ring{position:absolute;left:50%;top:48%;width:30%;aspect-ratio:1;margin:-15% 0 0 -15%;border-radius:50%;border:5px solid #fff;box-shadow:0 0 18px #FFE14D,inset 0 0 12px #FFE14D;opacity:0;pointer-events:none}
+.bp-card.impact .bp-ring{animation:bpRing .4s ease-out}
+.bp-card.crit .bp-ring{border-color:#FFE14D}
+@keyframes bpRing{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(2.4)}}
+.bp-spark{position:absolute;left:50%;top:48%;width:6px;height:16px;margin:-8px 0 0 -3px;border-radius:3px;background:#FFE14D;box-shadow:0 0 8px #FFE14D;opacity:0;pointer-events:none}
+.bp-card.impact .bp-spark{animation:bpSpark .42s ease-out}
+@keyframes bpSpark{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scaleY(1)}100%{opacity:0;transform:rotate(var(--a)) translateY(-70px) scaleY(.4)}}
+@media (prefers-reduced-motion:reduce){.bp-hero{transform:none!important}.bp-hero.running::before,.bp-dust,.bp-ring,.bp-spark{display:none}.bp-card.impact{animation:none}}

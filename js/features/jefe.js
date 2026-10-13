@@ -171,6 +171,17 @@ function bossHit(n,why){
  const hid=!b.won&&bossGuard(b).hide;
  showBossHit(n,from,b.hp,b.max,b.id,b.won,why,{crit,hid});}
 
+/* El héroe ataca con el motor de animación: corre (con polvo y líneas de velocidad), coge impulso,
+   golpea con parón de impacto y temblor, salta hacia atrás y lo celebra */
+function heroAttack(el,again,o,won){const host=el.querySelector('.bp-hero'),svg=host&&host.querySelector('svg.rig'),card=el.querySelector('.bp-card'),arena=el.querySelector('.bp-arena');
+ if(!svg||typeof rigAttach!=='function')return;
+ const R=rigAttach(svg,{host,onStep(){if(!arena)return;const a=arena.getBoundingClientRect(),h=host.getBoundingClientRect();const d=document.createElement('span');d.className='bp-dust';
+   d.style.left=(h.left-a.left+h.width*.42)+'px';d.style.top=(h.bottom-a.top-h.height*.05)+'px';arena.appendChild(d);setTimeout(()=>d.remove(),520);}});
+ if(!R)return;if(rigReduce()){host.style.transform='none';return;}
+ if(!again){host.classList.add('running');setTimeout(()=>host.classList.remove('running'),430);}
+ R.onImpact=()=>{card.classList.remove('impact');void card.offsetWidth;card.classList.add('impact');};
+ R.play(again?'quick':'attack',{crit:!!(o.crit&&!o.dodge),miss:!!o.dodge,won});}
+
 /* ---- Animación de golpe en mitad de la pantalla (no bloquea nada y se va sola) ---- */
 const bossPop={timer:null,dmg:0,from:0};
 const ATK={Pomodoro:'⏱️',Tarea:'✅',Repaso:'🔁','Vuelta cerrada':'📚','Récord':'🏅',Entrega:'📄',Flashcard:'🃏',Simulacro:'🎯','Error resuelto':'🩹'};
@@ -182,12 +193,13 @@ function showBossHit(n,from,to,max,id,won,why,o){o=o||{};
  const lbl=o.hide?'¡Se esconde!':o.dodge?'¡Esquivado!':`−${bossPop.dmg}`;
  clearTimeout(bossPop.timer);
  const pf=bossPop.from/max*100,pt=to/max*100,em=ATK[why]||'⚡';
- const hero=typeof avatarFullSVG==='function'?avatarFullSVG(state.avatar,{cls:'fb-atk'}):avatarSVG(state.avatar);
+ const hero=typeof avatarFullSVG==='function'?avatarFullSVG(state.avatar):avatarSVG(state.avatar);
  el.innerHTML=`<div class="bp-card${won?' win':''}${again?' again':''}${o.dodge?' dodge':''}${o.crit&&!o.dodge?' crit':''}">
   <div class="bp-arena"><div class="bp-hero">${hero}</div><span class="bp-shot" aria-hidden="true">${em}</span>
-   <div class="bp-art">${bossSVG(id,won)}<svg class="bp-slash" viewBox="0 0 100 100" aria-hidden="true"><path d="M12 82 Q50 50 90 14" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M12 82 Q50 50 90 14" fill="none" stroke="#FFE14D" stroke-width="4" stroke-linecap="round"/></svg><span class="bp-flash"></span><span class="bp-dmg">${lbl}</span>${o.crit&&!o.dodge?'<span class="bp-crit">¡Contraataque! ×1,5</span>':''}</div></div>
+   <div class="bp-art">${bossSVG(id,won)}<svg class="bp-slash" viewBox="0 0 100 100" aria-hidden="true"><path d="M12 82 Q50 50 90 14" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M12 82 Q50 50 90 14" fill="none" stroke="#FFE14D" stroke-width="4" stroke-linecap="round"/></svg><span class="bp-flash"></span><span class="bp-ring"></span>${[0,45,90,135,180,225,270,315].map(a=>`<span class="bp-spark" style="--a:${a}deg"></span>`).join('')}<span class="bp-dmg">${lbl}</span>${o.crit&&!o.dodge?'<span class="bp-crit">¡Contraataque! ×1,5</span>':''}</div></div>
   <div class="bp-name">${esc(BOSSES[id].name)}</div><div class="bp-bar"><i class="bp-ghost" style="width:${pf}%"></i><i class="bp-fill" style="width:${pf}%"></i></div><div class="bp-hp"><b>${to}</b> / ${max} PV${why?` · ${esc(why)}`:''}</div>${o.hide?'<div class="bp-note">Se ha escondido hasta mañana. Lo que estudies hoy sigue dándote XP y monedas.</div>':o.dodge?`<div class="bp-note">${o.crit?'Ha esquivado tu golpe… ¡pero el siguiente será un contraataque ×1,5!':'Está en guardia y ha esquivado. ¡Sigue intentándolo!'}</div>`:o.hid?'<div class="bp-note">¡Le has dado tanta caña que se esconde hasta mañana!</div>':''}${won?'<div class="bp-win">¡Derrotado!</div>':''}</div>`;
  el.classList.remove('out');el.hidden=false;
+ heroAttack(el,again,o,won);
  const fill=el.querySelector('.bp-fill'),ghost=el.querySelector('.bp-ghost');
  /* La vida baja justo cuando llega el golpe */
  setTimeout(()=>{if(fill)fill.style.width=pt+'%';if(ghost)ghost.style.width=pt+'%';},again?120:620);
