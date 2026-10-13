@@ -91,6 +91,8 @@ $$('[data-act="t-reset"]').forEach(b=>b.innerHTML=ico('reset'));
 $$('[data-act="t-skip"]').forEach(b=>b.innerHTML=ico('skip'));
 const words=['Concentra','Repasa','Descansa','Repite','Sube de nivel','Un bloque más','Constancia'];
 $('#marquee').innerHTML=words.map(w=>`<span>${w}</span>${ico('star')}`).join('');
+/* Cambio de precios (oct. 2026): quien ya tenía el uniforme sanitario o las botas por su logro, se los queda */
+if(!state.mig202610){if(state.ach.sim1)state.owned.sanitaria=true;if(state.ach.fisico1)state.owned.botas=true;state.mig202610=1;save();}
 initSettings();initSounds();
 (function restore(){const t=state.timer;if(t.running&&t.endAt&&Date.now()>=t.endAt){completeTimer(true);}else if(!t.running&&(t.remaining==null||t.remaining>durOf(t.mode)))t.remaining=durOf(t.mode);})();
 if(state.timer.running)armEnd();

@@ -173,10 +173,10 @@ function avatarFullSVG(cfg,opts){opts=opts||{};
 /* Pone una pose en el texto del SVG (para miniaturas estáticas) */
 function rigApplyStr(svg,P){return svg.replace(/data-j="([A-Za-z0-9]+)" transform=""/g,(m,j)=>`data-j="${j}" transform="${rigTf(j,P)}"`);}
 
-ITEMS.outfit=[{id:'basica',name:'Camiseta básica'},{id:'sudadera',name:'Sudadera'},{id:'chandal',name:'Chándal',u:{lvl:3}},{id:'bombera',name:'Uniforme de bombera',u:{lvl:5}},{id:'sanitaria',name:'Uniforme sanitario',u:{ach:'sim1'}},
+ITEMS.outfit=[{id:'basica',name:'Camiseta básica'},{id:'sudadera',name:'Sudadera'},{id:'chandal',name:'Chándal',u:{lvl:3}},{id:'bombera',name:'Uniforme de bombera',u:{lvl:5}},{id:'sanitaria',name:'Uniforme sanitario',u:{coins:2400}},
  {id:'vaquera',name:'Chaqueta vaquera',u:{coins:120}},{id:'chef',name:'Chaqueta de chef',u:{coins:150}},{id:'pijama',name:'Pijama de estrellas',u:{ach:'diario7'}},{id:'espacial',name:'Traje espacial',u:{lvl:9}},
  {id:'neon',name:'Cazadora neón',u:{coins:220}},{id:'gala',name:'Traje de gala',u:{lvl:12}},{id:'armadura',name:'Armadura',u:{ach:'jefe5'}},{id:'toga',name:'Toga de graduación',u:{coins:300}},{id:'superheroe',name:'Traje de superheroína',u:{ach:'record5'},leg:true}];
-ITEMS.shoes=[{id:'zapas',name:'Zapatillas'},{id:'deportivas',name:'Deportivas',u:{lvl:2}},{id:'botas',name:'Botas de intervención',u:{ach:'fisico1'}},{id:'zapatos',name:'Zapatos',u:{coins:80}},{id:'neonz',name:'Zapatillas neón',u:{coins:150}},{id:'pantuflas',name:'Pantuflas',u:{ach:'cuidado7'}}];
+ITEMS.shoes=[{id:'zapas',name:'Zapatillas'},{id:'deportivas',name:'Deportivas',u:{ach:'fisico1'}},{id:'botas',name:'Botas de intervención',u:{coins:1800}},{id:'zapatos',name:'Zapatos',u:{coins:80}},{id:'neonz',name:'Zapatillas neón',u:{coins:150}},{id:'pantuflas',name:'Pantuflas',u:{ach:'cuidado7'}}];
 ITEMS.hand=[{id:'none',name:'Nada'},{id:'libro',name:'Libro'},{id:'cafe',name:'Café',u:{lvl:2}},{id:'lapiz',name:'Lápiz gigante',u:{ach:'primeraTarea'}},{id:'extintor',name:'Extintor',u:{lvl:6}},
  {id:'mochila',name:'Mochila',u:{coins:90}},{id:'linterna',name:'Linterna',u:{coins:110}},{id:'trofeo',name:'Trofeo',u:{ach:'jefe1'}}];
 CATS.splice(CATS.findIndex(c=>c[0]==='bg'),0,['outfit','Ropa'],['shoes','Calzado'],['hand','En la mano']);
