@@ -138,32 +138,55 @@ function ensureBoss(){
  if(ri>=0){const [x]=state.revenge.splice(ri,1);const rmax=Math.round(max*1.3/10)*10;state.boss={week:ws,id:x.id,max:rmax,hp:rmax,won:false,wonAt:null,hits:[],revenge:true};return !!b;}
  let id=bossForWeek(ws);if(b&&b.id===id)id=BOSS_REG[(BOSS_REG.indexOf(id)+1)%BOSS_REG.length];
  state.boss={week:ws,id,max,hp:max,won:false,wonAt:null,hits:[]};return !!b;}
+/* ---- Guardia del jefe: cuanto más daño le haces en un mismo día, más esquiva ----
+   · Hasta el 25 % de su vida en el día: despistado, esquiva poco y, si esquiva, tu siguiente golpe es un contraataque ×1,5.
+   · Del 25 % al 40 %: en guardia, esquiva la mitad de los golpes grandes.
+   · Al llegar al 40 % se esconde hasta mañana. Así nunca cae en menos de 3 días. */
+const GUARD_CAP=.4;
+const GUARD=[{max:.25,p:.15,crit:true,name:'Despistado',em:'😴'},{max:GUARD_CAP,p:.5,crit:false,name:'En guardia',em:'🛡️'},{max:9,p:1,crit:false,name:'Escondido hasta mañana',em:'🫣',hide:true}];
+function bossDayDmg(b){return b.day&&b.day.d===today()?b.day.dmg:0;}
+function bossGuard(b){const r=bossDayDmg(b)/b.max;return GUARD.find(g=>r<g.max-1e-9);}
 function bossHit(n,why){
  ensureBoss();const b=state.boss;n=Math.round(n);if(b.won||n<=0)return;
- const from=b.hp;b.hp=Math.max(0,b.hp-n);b.hits.unshift({n,why,at:Date.now()});b.hits=b.hits.slice(0,5);bossFx=Date.now();
- const name=BOSSES[b.id].name;
+ const name=BOSSES[b.id].name,from=b.hp,g=bossGuard(b),big=n>=10;let crit=false;
+ if(!b.day||b.day.d!==today())b.day={d:today(),dmg:0};
+ /* Escondido: ya no le entra nada hoy (solo avisamos con los golpes grandes) */
+ if(g.hide){if(big)showBossHit(0,from,b.hp,b.max,b.id,false,why,{dodge:true,hide:true});return;}
+ /* Los golpes pequeños (flashcards, errores) siempre entran; los grandes pueden fallar */
+ if(big){
+  if(b.crit){crit=true;b.crit=false;n=Math.round(n*1.5);}
+  else if(!(b.lastDodge&&g.crit)&&Math.random()<g.p){
+   b.lastDodge=true;b.crit=g.crit;b.dodges=(b.dodges||0)+1;b.hits.unshift({n:0,why,at:Date.now(),dodge:true});b.hits=b.hits.slice(0,5);
+   showBossHit(0,from,b.hp,b.max,b.id,false,why,{dodge:true,crit:g.crit});return;}
+  b.lastDodge=false;
+ }
+ /* Nunca más del 40 % de su vida en un día */
+ n=Math.min(n,Math.max(0,Math.round(b.max*GUARD_CAP)-b.day.dmg),b.hp);if(n<=0)return;
+ b.day.dmg+=n;b.hp-=n;b.hits.unshift({n,why,at:Date.now(),crit});b.hits=b.hits.slice(0,5);bossFx=Date.now();
  if(b.hp<=0){b.won=true;b.wonAt=Date.now();state.counts.bossWins=(state.counts.bossWins||0)+1;
   const mult=b.revenge?2:1;if(b.revenge)state.counts.revengeWins=(state.counts.revengeWins||0)+1;
   const fz=Math.max(0,Math.min(mult,3-state.freezes));state.freezes+=fz;const coins=120*mult+(mult-fz)*50;
   grantXP(250*mult,b.revenge?'¡Revancha cumplida!':'¡Jefe derrotado!',coins,true);
   toast(`<b>¡Has derrotado a ${esc(name)}${b.revenge?' en su revancha':''}!</b><br>+${250*mult} XP · +${coins} monedas${fz?` · +${fz} ${fz===1?'protector':'protectores'} de racha`:''}`,'trophy','ach');confetti(b.revenge?300:220);}
- showBossHit(n,from,b.hp,b.max,b.id,b.won,why);}
+ const hid=!b.won&&bossGuard(b).hide;
+ showBossHit(n,from,b.hp,b.max,b.id,b.won,why,{crit,hid});}
 
 /* ---- Animación de golpe en mitad de la pantalla (no bloquea nada y se va sola) ---- */
 const bossPop={timer:null,dmg:0,from:0};
 const ATK={Pomodoro:'⏱️',Tarea:'✅',Repaso:'🔁','Vuelta cerrada':'📚','Récord':'🏅',Entrega:'📄',Flashcard:'🃏',Simulacro:'🎯','Error resuelto':'🩹'};
-function showBossHit(n,from,to,max,id,won,why){
+function showBossHit(n,from,to,max,id,won,why,o){o=o||{};
  let el=$('#bossPop');
  if(!el){el=document.createElement('div');el.id='bossPop';el.className='boss-pop';el.setAttribute('aria-hidden','true');el.hidden=true;document.body.appendChild(el);}
  const again=bossPop.timer&&!el.hidden;
  if(again){bossPop.dmg+=n;}else{bossPop.dmg=n;bossPop.from=from;}
+ const lbl=o.hide?'¡Se esconde!':o.dodge?'¡Esquivado!':`−${bossPop.dmg}`;
  clearTimeout(bossPop.timer);
  const pf=bossPop.from/max*100,pt=to/max*100,em=ATK[why]||'⚡';
  const hero=typeof avatarFullSVG==='function'?avatarFullSVG(state.avatar,{cls:'fb-atk'}):avatarSVG(state.avatar);
- el.innerHTML=`<div class="bp-card${won?' win':''}${again?' again':''}">
+ el.innerHTML=`<div class="bp-card${won?' win':''}${again?' again':''}${o.dodge?' dodge':''}${o.crit&&!o.dodge?' crit':''}">
   <div class="bp-arena"><div class="bp-hero">${hero}</div><span class="bp-shot" aria-hidden="true">${em}</span>
-   <div class="bp-art">${bossSVG(id,won)}<svg class="bp-slash" viewBox="0 0 100 100" aria-hidden="true"><path d="M12 82 Q50 50 90 14" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M12 82 Q50 50 90 14" fill="none" stroke="#FFE14D" stroke-width="4" stroke-linecap="round"/></svg><span class="bp-flash"></span><span class="bp-dmg">−${bossPop.dmg}</span></div></div>
-  <div class="bp-name">${esc(BOSSES[id].name)}</div><div class="bp-bar"><i class="bp-ghost" style="width:${pf}%"></i><i class="bp-fill" style="width:${pf}%"></i></div><div class="bp-hp"><b>${to}</b> / ${max} PV${why?` · ${esc(why)}`:''}</div>${won?'<div class="bp-win">¡Derrotado!</div>':''}</div>`;
+   <div class="bp-art">${bossSVG(id,won)}<svg class="bp-slash" viewBox="0 0 100 100" aria-hidden="true"><path d="M12 82 Q50 50 90 14" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M12 82 Q50 50 90 14" fill="none" stroke="#FFE14D" stroke-width="4" stroke-linecap="round"/></svg><span class="bp-flash"></span><span class="bp-dmg">${lbl}</span>${o.crit&&!o.dodge?'<span class="bp-crit">¡Contraataque! ×1,5</span>':''}</div></div>
+  <div class="bp-name">${esc(BOSSES[id].name)}</div><div class="bp-bar"><i class="bp-ghost" style="width:${pf}%"></i><i class="bp-fill" style="width:${pf}%"></i></div><div class="bp-hp"><b>${to}</b> / ${max} PV${why?` · ${esc(why)}`:''}</div>${o.hide?'<div class="bp-note">Se ha escondido hasta mañana. Lo que estudies hoy sigue dándote XP y monedas.</div>':o.dodge?`<div class="bp-note">${o.crit?'Ha esquivado tu golpe… ¡pero el siguiente será un contraataque ×1,5!':'Está en guardia y ha esquivado. ¡Sigue intentándolo!'}</div>`:o.hid?'<div class="bp-note">¡Le has dado tanta caña que se esconde hasta mañana!</div>':''}${won?'<div class="bp-win">¡Derrotado!</div>':''}</div>`;
  el.classList.remove('out');el.hidden=false;
  const fill=el.querySelector('.bp-fill'),ghost=el.querySelector('.bp-ghost');
  /* La vida baja justo cuando llega el golpe */
@@ -180,8 +203,17 @@ function renderBoss(){
  <div class="boss-info"><span class="eyebrow">${b.revenge?'<span class="chip revenge">¡Revancha!</span> ':''}Jefe de la semana · ${when}</span><h2 class="boss-name">${esc(B.name)}</h2><p class="boss-taunt">${b.won?'Vuelve el lunes con un jefe nuevo. ¡Buen trabajo!':b.revenge?'Ha vuelto más fuerte tras escaparse. Vencerlo da doble recompensa.':esc(B.taunt)}</p>
   <div class="boss-hp"><div class="boss-hpbar" role="progressbar" aria-label="Vida del jefe" aria-valuenow="${Math.round(pct)}"><i style="width:${pct}%"></i></div><span>${b.hp} / ${b.max} PV</span></div>
   <ul class="boss-moves">${BOSS_MOVES.map(([i,l,d])=>`<li>${ico(i)}<span>${l}</span><b>${d}</b></li>`).join('')}</ul>
-  <div class="boss-foot"><span class="boss-reward">${ico('gift')}${b.won?'Recompensa conseguida':(b.revenge?'Recompensa doble: 500 XP · 240 monedas · 2 protectores de racha':'Recompensa: 250 XP · 120 monedas · 1 protector de racha')}</span>${b.hits.length?`<span class="boss-last">Último golpe: −${b.hits[0].n} · ${esc(b.hits[0].why)}</span>`:''}</div>
+  ${b.won?'':guardHTML(b)}
+  <div class="boss-foot"><span class="boss-reward">${ico('gift')}${b.won?'Recompensa conseguida':(b.revenge?'Recompensa doble: 500 XP · 240 monedas · 2 protectores de racha':'Recompensa: 250 XP · 120 monedas · 1 protector de racha')}</span>${b.hits.length?`<span class="boss-last">Último golpe: ${b.hits[0].dodge?'¡esquivado!':`−${b.hits[0].n}${b.hits[0].crit?' (contraataque)':''}`} · ${esc(b.hits[0].why)}</span>`:''}</div>
  </div>`;}
+
+function guardHTML(b){const g=bossGuard(b),d=bossDayDmg(b),i=GUARD.indexOf(g),cap=Math.round(b.max*GUARD_CAP);
+ const msg=g.hide?`Hoy le has quitado <b>${d} PV</b>, el máximo del día. Mañana vuelve a estar despistado.`
+  :b.crit?'Ha esquivado: tu próximo golpe es un <b>contraataque ×1,5</b>.'
+  :i===0?`Hoy le has quitado <b>${d} PV</b>. A partir de ${Math.round(b.max*g.max)} se pone en guardia.`
+  :`Hoy le has quitado <b>${d} PV</b>. Al llegar a ${cap} se esconde hasta mañana.`;
+ const head=g.hide?g.name:`${g.name} · esquiva el ${Math.round(g.p*100)}% de los golpes grandes`;
+ return `<div class="boss-guard g${i}"><span class="bg-em">${g.em}</span><div><b>${head}</b><span>${msg}</span></div></div>`;}
 
 /* ---- Galería de jefes (Progreso) ---- */
 function renderBossGallery(){
