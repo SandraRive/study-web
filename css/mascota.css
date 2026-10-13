@@ -108,3 +108,37 @@
 .evo-to{animation-delay:2s}
 @media (prefers-reduced-motion:reduce){.h-egg,.h-crack,.h-glow,.h-top,.h-bot,.h-pet,.h-rays,.hb,.hatch-txt{animation:none!important}.h-egg,.hb,.h-glow{display:none}.h-pet,.hatch-txt{opacity:1;transform:none}}
 @keyframes hOut{to{opacity:0}}
+
+/* ---------- Snack: la galleta vuela, la mascota salta, la atrapa y se la come ---------- */
+.pet-fx.d{animation-fill-mode:both}
+.pet-svg.eat .pet-body{animation:petEat 2s cubic-bezier(.3,.7,.4,1) both}
+.pet-chomp{transform-box:fill-box;transform-origin:50% 30%}
+.pet-svg.eat .pet-chomp{animation:petChomp .2s ease-in-out .95s 4}
+.snk-cookie{position:absolute;width:20%;aspect-ratio:1;left:50%;top:var(--ty);translate:-50% -50%;z-index:2;pointer-events:none;animation:snkFly .62s cubic-bezier(.4,0,.7,.4) both,snkGone .1s linear .6s forwards}
+.snk-cookie svg{width:100%;height:100%;display:block;animation:snkSpin .62s linear both;filter:drop-shadow(0 3px 0 rgba(0,0,0,.35))}
+.snk-crumb{position:absolute;left:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:2px;background:#E9A65A;border:1.5px solid #17132F;pointer-events:none;opacity:0;animation:snkCrumb .55s ease-out .6s both}
+.snk-crumb:nth-child(odd){background:#5A3417}
+.snk-txt{position:absolute;font:900 18px var(--f-display);color:#FFE14D;-webkit-text-stroke:1px #17132F;text-shadow:0 2px 0 #17132F;pointer-events:none;opacity:0;white-space:nowrap}
+.snk-txt.t1{right:6%;top:14%;animation:snkTxt .6s ease-out .95s both}
+.snk-txt.t2{left:8%;top:26%;font-size:14px;animation:snkTxt .6s ease-out 1.3s both}
+@keyframes petEat{0%{transform:none}14%{transform:translateY(0) scale(1.1,.88)}31%{transform:translateY(-30px) scale(.93,1.09)}36%{transform:translateY(-30px) scale(1.05,.97)}45%{transform:translateY(0) scale(1.13,.86)}51%{transform:scale(1,1)}57%{transform:scale(1.06,.94)}63%{transform:scale(.97,1.03)}69%{transform:scale(1.06,.94)}75%{transform:scale(.97,1.03)}81%{transform:scale(1.04,.96)}87%{transform:none}93%{transform:translateY(-9px) scale(.97,1.03)}100%{transform:none}}
+@keyframes petChomp{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.15)}}
+@keyframes snkFly{0%{left:96%;top:-14%}35%{left:78%;top:-4%}70%{left:60%;top:calc(var(--ty) - 8%)}100%{left:50%;top:var(--ty)}}
+@keyframes snkSpin{from{transform:rotate(-120deg)}to{transform:rotate(200deg)}}
+@keyframes snkGone{to{transform:scale(0);opacity:0}}
+@keyframes snkCrumb{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(180deg)}}
+@keyframes snkTxt{0%{opacity:0;transform:translateY(6px) scale(.6)}35%{opacity:1;transform:translateY(-2px) scale(1.15)}100%{opacity:0;transform:translateY(-16px) scale(1)}}
+
+/* ---------- Mimos: una mano la acaricia y ella se deja ---------- */
+.pet-svg.pat .pet-body{animation:petPat 1.9s ease-in-out both}
+.pet-svg.pat .pet-blush{transform-box:fill-box;transform-origin:center;animation:patBlush .6s ease-in-out .3s 3}
+.pat-hand{position:absolute;width:36%;left:50%;top:var(--hy);translate:-50% -100%;z-index:2;pointer-events:none;transform-origin:50% 100%;animation:patHand 1.9s ease-in-out both}
+.pat-hand svg{width:100%;height:auto;display:block;filter:drop-shadow(0 3px 0 rgba(0,0,0,.35))}
+@keyframes patHand{0%{transform:translateY(-130%) rotate(-10deg);opacity:0}14%{opacity:1}20%{transform:translateY(4%) rotate(0)}30%{transform:translate(-26%,6%) rotate(-12deg)}42%{transform:translate(26%,6%) rotate(12deg)}54%{transform:translate(-26%,6%) rotate(-12deg)}66%{transform:translate(26%,6%) rotate(12deg)}76%{transform:translate(0,4%) rotate(0)}88%{transform:translateY(-130%) rotate(8deg);opacity:1}100%{transform:translateY(-140%);opacity:0}}
+@keyframes petPat{0%,14%{transform:none}20%{transform:scale(1.07,.92)}30%{transform:scale(1.05,.94) rotate(-6deg)}42%{transform:scale(1.05,.94) rotate(6deg)}54%{transform:scale(1.05,.94) rotate(-6deg)}66%{transform:scale(1.05,.94) rotate(6deg)}76%{transform:scale(1.04,.95)}84%{transform:none}91%{transform:translateY(-12px) scale(.96,1.05)}100%{transform:none}}
+@keyframes patBlush{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+
+/* ---------- Demasiados mimos: niega con la cabeza ---------- */
+.pet-svg.nope .pet-body{animation:petNope .7s ease-in-out}
+@keyframes petNope{0%,100%{transform:none}20%{transform:rotate(-8deg)}40%{transform:rotate(7deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){.snk-cookie,.snk-crumb,.snk-txt,.pat-hand{display:none}}

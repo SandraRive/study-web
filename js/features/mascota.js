@@ -20,12 +20,13 @@ const MOOD_TXT={egg:'Está a punto de nacer… completa un pomodoro.',happy:'¡E
 /* ---- Dibujo (viewBox 160×160) ---- */
 function petEyes(m,cx,cy,sp,col){const L=cx-sp,R=cx+sp;
  if(m==='sleep'||m==='gloom')return `<path d="M${L-7} ${cy} q7 5 14 0 M${R-7} ${cy} q7 5 14 0" fill="none" stroke="${OL}" stroke-width="3.5" stroke-linecap="round"/>`;
- if(m==='happy')return `<path d="M${L-7} ${cy+2} q7 -9 14 0 M${R-7} ${cy+2} q7 -9 14 0" fill="none" stroke="${OL}" stroke-width="3.5" stroke-linecap="round"/>`;
+ if(m==='happy'||m==='eat'||m==='love')return `<path d="M${L-7} ${cy+2} q7 -9 14 0 M${R-7} ${cy+2} q7 -9 14 0" fill="none" stroke="${OL}" stroke-width="3.5" stroke-linecap="round"/>`;
  const e=`<g class="pet-eye"><ellipse cx="${L}" cy="${cy}" rx="6" ry="7.5" fill="${OL}"/><ellipse cx="${R}" cy="${cy}" rx="6" ry="7.5" fill="${OL}"/><circle cx="${L+2}" cy="${cy-3}" r="2.4" fill="#fff"/><circle cx="${R+2}" cy="${cy-3}" r="2.4" fill="#fff"/></g>`;
  const brow=m==='sad'||m==='hungry'?`<path d="M${L-9} ${cy-9} l12 -5 M${R+9} ${cy-9} l-12 -5" stroke="${OL}" stroke-width="3" stroke-linecap="round"/>`:'';
  return e+brow;}
 function petMouth(m,cx,cy){
- if(m==='happy')return `<path d="M${cx-9} ${cy} q9 11 18 0Z" fill="#7A1F3D" stroke="${OL}" stroke-width="3" stroke-linejoin="round"/>`;
+ if(m==='eat')return `<ellipse class="pet-chomp" cx="${cx}" cy="${cy+4}" rx="9" ry="9" fill="#7A1F3D" stroke="${OL}" stroke-width="3"/><ellipse class="pet-chomp" cx="${cx}" cy="${cy+8}" rx="5" ry="3.5" fill="#FF7FB5"/>`;
+ if(m==='happy'||m==='love')return `<path d="M${cx-9} ${cy} q9 11 18 0Z" fill="#7A1F3D" stroke="${OL}" stroke-width="3" stroke-linejoin="round"/>`;
  if(m==='sad'||m==='gloom')return `<path d="M${cx-7} ${cy+5} q7 -7 14 0" fill="none" stroke="${OL}" stroke-width="3" stroke-linecap="round"/>`;
  if(m==='hungry')return `<ellipse cx="${cx}" cy="${cy+2}" rx="5" ry="6" fill="#7A1F3D" stroke="${OL}" stroke-width="3"/>`;
  if(m==='sleep')return `<ellipse cx="${cx}" cy="${cy+2}" rx="3.5" ry="2.5" fill="${OL}"/>`;
@@ -56,7 +57,8 @@ function petSVG(p,mood,opts){opts=opts||{};const SP=PET_SPECIES[p.species]||PET_
   o=`<path d="M80 50 V40" stroke="${dk}" stroke-width="6"/>${leaves}${flower}<path d="M80 48 C114 48 128 80 126 108 C124 134 104 146 80 146 C56 146 36 134 34 108 C32 80 46 48 80 48Z" fill="${c2}" ${S}/><path d="M44 112 Q80 128 116 112 Q114 138 80 142 Q46 138 44 112Z" fill="${c}" opacity=".55"/>`;
   if(st>=2)extra=`<ellipse cx="62" cy="146" rx="12" ry="7" fill="${dk}" ${S}/><ellipse cx="98" cy="146" rx="12" ry="7" fill="${dk}" ${S}/>`;
   face=petEyes(mood,80,96,16)+petMouth(mood,80,114);}
- const blush=mood!=='gloom'?`<circle cx="56" cy="${p.species==='gota'?110:106}" r="6" fill="#FF7FB5" opacity=".5"/><circle cx="104" cy="${p.species==='gota'?110:106}" r="6" fill="#FF7FB5" opacity=".5"/>`:'';
+ const bR=mood==='love'?9:6,bO=mood==='love'?.85:.5,bY=p.species==='gota'?110:106;
+ const blush=mood!=='gloom'?`<circle class="pet-blush" cx="56" cy="${bY}" r="${bR}" fill="#FF7FB5" opacity="${bO}"/><circle class="pet-blush" cx="104" cy="${bY}" r="${bR}" fill="#FF7FB5" opacity="${bO}"/>`:'';
  const tear=mood==='sad'||mood==='gloom'?`<path d="M${mood==='gloom'?64:62} 104 q-4 8 0 11 q4 -3 0 -11Z" fill="#7FD8FF" stroke="${OL}" stroke-width="1.5"/>`:'';
  const zz=mood==='sleep'||mood==='gloom'?`<text x="118" y="44" font-size="18" font-weight="900" fill="#fff" stroke="${OL}" stroke-width="1" class="pet-z">z</text><text x="130" y="28" font-size="13" font-weight="900" fill="#fff" stroke="${OL}" stroke-width="1" class="pet-z z2">z</text>`:'';
  const aura=leg?`<circle cx="80" cy="92" r="70" fill="${c}" opacity=".18"/><circle cx="80" cy="92" r="58" fill="none" stroke="${c2}" stroke-width="2" stroke-dasharray="4 8" opacity=".7"/>`:'';
@@ -101,18 +103,48 @@ function petEvolve(from,to){const p=state.pet;p.food=Math.max(p.food,80);p.joy=M
   <h2 class="pet-evo-t">¡${nm} ahora es ${PET_STAGES[to].n.toLowerCase()}!</h2><p class="hint">${to===4?'Ha alcanzado su forma legendaria. Pocas mascotas llegan hasta aquí.':`Siguiente forma a las ${Math.round(PET_STAGES[to+1].min/60)} horas de foco.`}</p><button class="btn pink" data-act="pet-close">¡Genial!</button>`;
   m.hidden=false;m.classList.remove('hatching');setTimeout(()=>confetti(140),2200);},900);}
 function petAction(kind){const p=state.pet;if(!p||!p.species)return;petTick();if(petStage(p)===0){toast('Primero tiene que nacer: completa un pomodoro.','timer');return;}
- if(kind==='snack'){if(!(p.snacks>0)){toast('No te quedan snacks. Cada pomodoro te da uno.','timer');return;}p.snacks--;p.food=Math.min(100,p.food+25);p.joy=Math.min(100,p.joy+5);petFx('🍪');}
- else{const t=today();if(p.petDay!==t){p.petDay=t;p.pets=0;}if(p.pets>=6){petFx('💤');toast('Ya le has dado muchos mimos hoy. ¡Ahora toca estudiar!','sparkle');return;}p.pets++;p.joy=Math.min(100,p.joy+6);petFx('💖');}
- save();renderPet();}
-function petFx(em){const st=$('#petStage');if(!st)return;const s=document.createElement('span');s.className='pet-fx';s.textContent=em;s.style.left=(35+Math.random()*30)+'%';st.appendChild(s);setTimeout(()=>s.remove(),1200);
- const svg=st.querySelector('.pet-svg');if(svg){svg.classList.remove('jump');void svg.offsetWidth;svg.classList.add('jump');}}
+ if(Date.now()<petAnimUntil)return; /* deja que acabe la animación anterior */
+ if(kind==='snack'){if(!(p.snacks>0)){toast('No te quedan snacks. Cada pomodoro te da uno.','timer');return;}p.snacks--;p.food=Math.min(100,p.food+25);p.joy=Math.min(100,p.joy+5);save();renderPet();petPlay('snack');return;}
+ const t=today();if(p.petDay!==t){p.petDay=t;p.pets=0;}
+ if(p.pets>=6){petPlay('nope');toast('Ya le has dado muchos mimos hoy. ¡Ahora toca estudiar!','sparkle');return;}
+ p.pets++;p.joy=Math.min(100,p.joy+6);save();renderPet();petPlay('pat');}
+function petFx(em,o){o=o||{};const st=$('#petStage');if(!st)return;const s=document.createElement('span');s.className='pet-fx'+(o.delay?' d':'');s.textContent=em;s.style.left=(o.left!=null?o.left:35+Math.random()*30)+'%';if(o.delay)s.style.animationDelay=o.delay+'s';st.appendChild(s);setTimeout(()=>s.remove(),1200+(o.delay||0)*1000);
+ if(o.jump===false)return;const svg=st.querySelector('.pet-svg');if(svg){svg.classList.remove('jump');void svg.offsetWidth;svg.classList.add('jump');}}
+
+/* ---- Animaciones de snack y mimos ----
+   Mientras duran, renderPet() conserva el escenario para que no se corten. */
+let petAnimUntil=0,petAnimT=null;
+const COOKIE_SVG=`<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="#E9A65A" stroke="#17132F" stroke-width="3"/><path d="M9 15 Q13 8 21 7" stroke="#FFD49A" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="14" cy="20" rx="3" ry="2.5" fill="#5A3417"/><ellipse cx="24" cy="14" rx="2.6" ry="2.2" fill="#5A3417"/><ellipse cx="26" cy="25" rx="3" ry="2.5" fill="#5A3417"/><ellipse cx="17" cy="29" rx="2.2" ry="1.8" fill="#5A3417"/></svg>`;
+const HAND_SVG=`<svg viewBox="0 0 60 80" aria-hidden="true"><rect x="12" y="-4" width="36" height="26" rx="6" fill="#FF4D8D" stroke="#17132F" stroke-width="3"/><path d="M12 16 H48" stroke="#C21E5A" stroke-width="3"/>
+ <g fill="#FFD7B5" stroke="#17132F" stroke-width="3" stroke-linejoin="round"><rect x="13" y="58" width="9" height="17" rx="4.5"/><rect x="22" y="60" width="9" height="18" rx="4.5"/><rect x="31" y="60" width="9" height="18" rx="4.5"/><rect x="40" y="58" width="8.5" height="15" rx="4.2"/>
+ <path d="M10 26 Q10 20 16 20 H44 Q50 20 50 26 V58 Q50 66 42 66 H18 Q10 66 10 58Z"/><rect x="1" y="34" width="10" height="20" rx="5" transform="rotate(-20 6 44)"/></g><path d="M20 30 Q30 26 40 30" stroke="#E8B48C" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`;
+/* Altura (en % del escenario) de la boca y de la coronilla según especie y etapa */
+function petSpot(p){const st=petStage(p),sc=[.8,.62,.78,.92,1][st],y=u=>(150-150*sc+u*sc)/160*100;
+ const mouth={chispa:112,gota:120}[p.species]||116,top={chispa:40,gota:46}[p.species]||52;return {mouth:y(mouth),top:y(top)};}
+function petPlay(kind){const st=$('#petStage'),p=state.pet;if(!st||!p)return;clearTimeout(petAnimT);
+ const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(kind==='nope'){petFx('💤');const svg=st.querySelector('.pet-svg');if(svg){svg.classList.remove('nope');void svg.offsetWidth;svg.classList.add('nope');}return;}
+ if(reduce){petFx(kind==='snack'?'🍪':'💖');return;}
+ const dur=kind==='snack'?2000:1900,sp=petSpot(p);
+ st.innerHTML=petSVG(p,kind==='snack'?'eat':'love',{cls:kind==='snack'?'eat':'pat'});
+ if(kind==='snack'){
+  const ty=Math.max(14,sp.mouth-18.75);
+  st.insertAdjacentHTML('beforeend',`<span class="snk-cookie" style="--ty:${ty.toFixed(1)}%">${COOKIE_SVG}</span>`+
+   [...Array(8)].map((_,i)=>{const a=i/8*Math.PI*2+Math.random()*.5,r=22+Math.random()*20;return `<span class="snk-crumb" style="top:${ty.toFixed(1)}%;--dx:${(Math.cos(a)*r).toFixed(0)}px;--dy:${(Math.sin(a)*r+10).toFixed(0)}px"></span>`;}).join('')+
+   `<span class="snk-txt t1">¡Ñam!</span><span class="snk-txt t2">ñam</span>`);
+  setTimeout(()=>petFx('💛',{jump:false,left:62}),1650);}
+ else{
+  st.insertAdjacentHTML('beforeend',`<span class="pat-hand" style="--hy:${(sp.top+7).toFixed(1)}%">${HAND_SVG}</span>`);
+  [[.45,28],[.8,64],[1.15,36],[1.45,58]].forEach(([d,l],i)=>petFx(i%2?'💕':'💖',{jump:false,delay:d,left:l}));}
+ petAnimUntil=Date.now()+dur;
+ petAnimT=setTimeout(()=>{petAnimUntil=0;renderPet();},dur);}
 
 /* ---- Tarjeta en Inicio ---- */
 function renderPet(){const el=$('#petCard');if(!el)return;const p=state.pet;
  if(!p||!p.species){el.className='card pet-card adopt';
   el.innerHTML=`<div class="card-head"><h2 class="card-title">${ico('sparkle')}Adopta una mascota de estudio</h2></div><p class="hint">Nace con tu primer pomodoro, crece con tus horas de foco y evoluciona 4 veces. Si la abandonas, se pone triste… pero nunca se va.</p>
   <div class="pet-pick">${Object.entries(PET_SPECIES).map(([k,s])=>`<button class="pet-opt" data-act="pet-adopt" data-s="${k}"><span class="pet-opt-art">${petSVG({species:k,xp:600,food:80,joy:80,name:s.n},'happy')}</span><b>${s.n}</b><span>${s.d}</span></button>`).join('')}</div>`;return;}
- petTick();const SP=PET_SPECIES[p.species],st=petStage(p),mood=petMood(p);const nx=PET_STAGES[st+1];
+ petTick();const keep=Date.now()<petAnimUntil?$('#petStage'):null;const SP=PET_SPECIES[p.species],st=petStage(p),mood=petMood(p);const nx=PET_STAGES[st+1];
  const pct=nx?Math.min(100,(p.xp-PET_STAGES[st].min)/(nx.min-PET_STAGES[st].min)*100):100;
  const bar=(v,cl,l,ic)=>`<div class="pet-st"><span>${ic} ${l}</span><span class="care-bar ${cl}"><i style="width:${Math.round(v)}%"></i></span></div>`;
  el.className='card pet-card m-'+mood;
@@ -121,7 +153,8 @@ function renderPet(){const el=$('#petCard');if(!el)return;const p=state.pet;
  <div class="pet-info"><p class="pet-mood">${MOOD_TXT[mood]}</p>
   ${st>0?bar(p.food,'food','Energía','🍎')+bar(p.joy,'joy','Ánimo','💖'):''}
   <div class="pet-st"><span>⭐ ${nx?(st===0?`Para nacer: ${p.xp} de ${nx.min} min de foco`:`Hacia ${nx.n.toLowerCase()}: ${fmtMin(p.xp)} de ${Math.round(nx.min/60)} h`):'Forma final alcanzada'}</span><span class="care-bar grow"><i style="width:${pct}%"></i></span></div>
-  ${st>0?`<div class="aj-actions"><button class="btn sm" data-act="pet-pet">💖 Mimos</button><button class="btn sm sun" data-act="pet-snack" ${p.snacks>0?'':'disabled'}>🍪 Snack · ${p.snacks||0}</button></div>`:''}</div></div>`;}
+  ${st>0?`<div class="aj-actions"><button class="btn sm" data-act="pet-pet">💖 Mimos</button><button class="btn sm sun" data-act="pet-snack" ${p.snacks>0?'':'disabled'}>🍪 Snack · ${p.snacks||0}</button></div>`:''}</div></div>`;
+ if(keep){const ns=$('#petStage');if(ns)ns.replaceWith(keep);}}
 /* Mini mascota que estudia contigo en Foco */
 function renderPetMini(){const el=$('#petMini');if(!el)return;const p=state.pet;if(!p||!p.species){el.hidden=true;return;}el.hidden=false;
  const run=state.timer.running&&state.timer.mode==='work';const mood=run?'ok':petMood(p);
